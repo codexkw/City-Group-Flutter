@@ -36,8 +36,8 @@ ios/Runner/GeneratedPluginRegistrant.*
 *.g.dart
 *.freezed.dart
 
-# Firebase
-google-services.json
+# Firebase (google-services.json is safe to commit — contains only public keys)
+# google-services.json
 GoogleService-Info.plist
 
 # Secrets / env

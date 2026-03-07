@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "292970859562",
+    "project_id": "citygroup-ad7f6",
+    "storage_bucket": "citygroup-ad7f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292970859562:android:e4a760230d41b1999d8753",
+        "android_client_info": {
+          "package_name": "com.codexkw.citygroup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvzAq2kj4gp-5DNQ6fQ888yNJfKfSr7AI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

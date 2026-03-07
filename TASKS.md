@@ -24,10 +24,10 @@
 | Phase 3: Auth Screens | 6 | 6 | 0 |
 | Phase 4: Home + Attendance | 6 | 6 | 0 |
 | Phase 5: Tasks | 7 | 7 | 0 |
-| Phase 6: Notifications + Profile | 6 | 5 | 1 |
+| Phase 6: Notifications + Profile | 6 | 6 | 0 |
 | Phase 7: Speed Monitoring | 4 | 4 | 0 |
 | Phase 8: Polish + QA | 5 | 5 | 0 |
-| **Total** | **52** | **51** | **1** |
+| **Total** | **52** | **52** | **0** |
 
 ---
 
@@ -95,7 +95,7 @@
 
 ## Phase 6: Notifications + Profile
 
-- [ ] Firebase Messaging setup (google-services.json, foreground/background handling)
+- [✅] 2026-03-08 Firebase Messaging setup (google-services.json, foreground/background handling)
 - [✅] 2026-03-07 `notifications_repository.dart` — getAll, markAsRead, markAllAsRead
 - [✅] 2026-03-08 `notifications_screen.dart` — unread highlight, mark read, deep-link to tasks
 - [✅] 2026-03-07 `profile_repository.dart` — getProfile, updateProfile, updateLanguage, changePassword
@@ -145,4 +145,4 @@
 
 ---
 
-*Last updated: 2026-03-08 | Done: 51/52 (98%) | Remaining: Phase 6 (Firebase Messaging setup — requires google-services.json)*
+*Last updated: 2026-03-08 | Done: 52/52 (100%) | All phases complete*
