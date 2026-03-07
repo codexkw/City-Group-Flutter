@@ -38,7 +38,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
       );
       setState(() { _position = position; _isLoadingGps = false; });
     } catch (e) {
-      setState(() { _error = 'Failed to get location'; _isLoadingGps = false; });
+      setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
     }
   }
 
@@ -110,7 +110,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            _isLoadingGps ? l10n.loading : (_position != null ? 'GPS Ready' : _error ?? ''),
+                            _isLoadingGps ? l10n.loading : (_position != null ? l10n.gpsReady : _error ?? ''),
                             style: const TextStyle(fontSize: 16),
                           ),
                           if (_position != null)

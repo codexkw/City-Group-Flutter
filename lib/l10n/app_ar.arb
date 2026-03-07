@@ -112,5 +112,15 @@
   "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
   "fieldRequired": "هذا الحقل مطلوب",
   "minutes": "دقيقة",
-  "requiresPhoto": "مطلوب صورة"
+  "requiresPhoto": "مطلوب صورة",
+  "gpsReady": "GPS جاهز",
+  "gpsUnavailable": "GPS غير متاح",
+  "failedToGetLocation": "فشل في تحديد الموقع",
+  "locationServicesDisabled": "خدمات الموقع معطلة",
+  "locationPermissionDenied": "تم رفض إذن الموقع",
+  "locationPermissionPermanentlyDenied": "تم رفض إذن الموقع نهائياً",
+  "otp": "رمز التحقق",
+  "tooManyAttempts": "محاولات كثيرة. يرجى المحاولة لاحقاً.",
+  "radius": "نطاق",
+  "speedMonitoring": "مراقبة السرعة"
 }

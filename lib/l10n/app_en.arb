@@ -114,5 +114,15 @@
   "passwordsDoNotMatch": "Passwords do not match",
   "fieldRequired": "This field is required",
   "minutes": "min",
-  "requiresPhoto": "Photo required"
+  "requiresPhoto": "Photo required",
+  "gpsReady": "GPS Ready",
+  "gpsUnavailable": "GPS unavailable",
+  "failedToGetLocation": "Failed to get location",
+  "locationServicesDisabled": "Location services are disabled",
+  "locationPermissionDenied": "Location permission denied",
+  "locationPermissionPermanentlyDenied": "Location permission permanently denied",
+  "otp": "OTP",
+  "tooManyAttempts": "Too many attempts. Please try again later.",
+  "radius": "Radius",
+  "speedMonitoring": "Speed Monitoring"
 }

@@ -35,7 +35,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        setState(() { _error = 'Location services are disabled'; _isLoadingGps = false; });
+        setState(() { _error = AppLocalizations.of(context).locationServicesDisabled; _isLoadingGps = false; });
         return;
       }
 
@@ -43,12 +43,12 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          setState(() { _error = 'Location permission denied'; _isLoadingGps = false; });
+          setState(() { _error = AppLocalizations.of(context).locationPermissionDenied; _isLoadingGps = false; });
           return;
         }
       }
       if (permission == LocationPermission.deniedForever) {
-        setState(() { _error = 'Location permission permanently denied'; _isLoadingGps = false; });
+        setState(() { _error = AppLocalizations.of(context).locationPermissionPermanentlyDenied; _isLoadingGps = false; });
         return;
       }
 
@@ -57,7 +57,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       );
       setState(() { _position = position; _isLoadingGps = false; });
     } catch (e) {
-      setState(() { _error = 'Failed to get location: $e'; _isLoadingGps = false; });
+      setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
     }
   }
 
@@ -145,7 +145,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                                     style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                                   )
                                 else
-                                  Text(_error ?? 'GPS unavailable', style: const TextStyle(color: AppColors.danger)),
+                                  Text(_error ?? l10n.gpsUnavailable, style: const TextStyle(color: AppColors.danger)),
                               ],
                             ),
                           ),
@@ -185,7 +185,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                             child: ListTile(
                               leading: const Icon(Icons.location_on, color: AppColors.primary),
                               title: Text(loc['nameEn'] ?? ''),
-                              subtitle: Text('${loc['address'] ?? ''}\nRadius: ${loc['geofenceRadius']}m'),
+                              subtitle: Text('${loc['address'] ?? ''}\n${l10n.radius}: ${loc['geofenceRadius']}m'),
                               trailing: isSelected ? const Icon(Icons.check_circle, color: AppColors.primary) : null,
                               onTap: () => setState(() => _selectedLocationId = id),
                             ),

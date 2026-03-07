@@ -115,9 +115,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 controller: _otpController,
                 keyboardType: TextInputType.number,
                 textDirection: TextDirection.ltr,
-                decoration: const InputDecoration(
-                  labelText: 'OTP',
-                  prefixIcon: Icon(Icons.pin_outlined),
+                decoration: InputDecoration(
+                  labelText: l10n.otp,
+                  prefixIcon: const Icon(Icons.pin_outlined),
                 ),
               ),
               const SizedBox(height: 16),

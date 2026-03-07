@@ -112,5 +112,15 @@
   "passwordsDoNotMatch": "पासवर्ड मेल नहीं खाते",
   "fieldRequired": "यह फ़ील्ड आवश्यक है",
   "minutes": "मिनट",
-  "requiresPhoto": "फ़ोटो आवश्यक"
+  "requiresPhoto": "फ़ोटो आवश्यक",
+  "gpsReady": "GPS तैयार",
+  "gpsUnavailable": "GPS उपलब्ध नहीं",
+  "failedToGetLocation": "स्थान प्राप्त करने में विफल",
+  "locationServicesDisabled": "स्थान सेवाएं अक्षम हैं",
+  "locationPermissionDenied": "स्थान अनुमति अस्वीकृत",
+  "locationPermissionPermanentlyDenied": "स्थान अनुमति स्थायी रूप से अस्वीकृत",
+  "otp": "OTP",
+  "tooManyAttempts": "बहुत अधिक प्रयास। कृपया बाद में पुनः प्रयास करें।",
+  "radius": "त्रिज्या",
+  "speedMonitoring": "गति निगरानी"
 }

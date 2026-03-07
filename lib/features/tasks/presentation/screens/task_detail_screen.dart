@@ -66,7 +66,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     setState(() { _isActioning = true; _error = null; });
     final pos = await _getPosition();
     if (pos == null) {
-      setState(() { _error = 'Failed to get GPS'; _isActioning = false; });
+      setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isActioning = false; });
       return;
     }
     try {
@@ -137,7 +137,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     setState(() { _isActioning = true; _error = null; });
     final pos = await _getPosition();
     if (pos == null) {
-      setState(() { _error = 'Failed to get GPS'; _isActioning = false; });
+      setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isActioning = false; });
       return;
     }
     try {

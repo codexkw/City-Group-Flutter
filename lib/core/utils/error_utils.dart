@@ -37,7 +37,7 @@ String extractErrorMessage(Object error, AppLocalizations l10n) {
       if (status == 401) return l10n.loginError;
       if (status == 403) return l10n.errorOccurred;
       if (status == 404) return l10n.errorOccurred;
-      if (status == 429) return 'Too many attempts. Please try again later.';
+      if (status == 429) return l10n.tooManyAttempts;
       if (status >= 500) return l10n.errorOccurred;
     }
 
