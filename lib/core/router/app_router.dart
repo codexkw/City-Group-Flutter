@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/providers/auth_provider.dart';
+import '../../features/auth/presentation/screens/biometric_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
@@ -19,6 +20,7 @@ class AppRoutes {
   AppRoutes._();
 
   static const String login = '/login';
+  static const String biometric = '/biometric';
   static const String forgotPassword = '/forgot-password';
   static const String home = '/';
   static const String checkIn = '/check-in';
@@ -40,6 +42,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final isLoggedIn = authState.value != null;
       final isAuthRoute = state.matchedLocation == AppRoutes.login ||
+          state.matchedLocation == AppRoutes.biometric ||
           state.matchedLocation == AppRoutes.forgotPassword;
 
       if (!isLoggedIn && !isAuthRoute) return AppRoutes.login;
@@ -50,6 +53,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.biometric,
+        builder: (context, state) => const BiometricScreen(),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,

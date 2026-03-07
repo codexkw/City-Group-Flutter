@@ -1,8 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/api/api_client.dart';
+import '../../../profile/data/profile_repository.dart';
 import '../../data/auth_repository.dart';
 
 // Secure storage provider
@@ -92,8 +94,23 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
       ref.read(localeProvider.notifier).state = Locale(userData.language);
 
       state = AsyncValue.data(userData);
+
+      // Register FCM token (fire-and-forget — don't block login)
+      _registerFcmToken();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> _registerFcmToken() async {
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      if (fcmToken != null) {
+        final profileRepo = ProfileRepository(ref.read(apiClientProvider));
+        await profileRepo.registerFcmToken(fcmToken);
+      }
+    } catch (_) {
+      // Silently fail — FCM not configured or permission denied
     }
   }
 

@@ -21,13 +21,13 @@
 |-------|-------|------|-----------|
 | Phase 1: Project Setup | 10 | 10 | 0 |
 | Phase 2: Core Infrastructure | 8 | 8 | 0 |
-| Phase 3: Auth Screens | 6 | 4 | 2 |
+| Phase 3: Auth Screens | 6 | 6 | 0 |
 | Phase 4: Home + Attendance | 6 | 6 | 0 |
 | Phase 5: Tasks | 7 | 7 | 0 |
 | Phase 6: Notifications + Profile | 6 | 5 | 1 |
-| Phase 7: Speed Monitoring | 4 | 0 | 4 |
+| Phase 7: Speed Monitoring | 4 | 4 | 0 |
 | Phase 8: Polish + QA | 5 | 0 | 5 |
-| **Total** | **52** | **40** | **12** |
+| **Total** | **52** | **46** | **6** |
 
 ---
 
@@ -64,8 +64,8 @@
 - [✅] 2026-03-07 `auth_repository.dart` — login, logout, forgotPassword, resetPassword
 - [✅] 2026-03-07 `login_screen.dart` — full implementation with error handling
 - [✅] 2026-03-07 `forgot_password_screen.dart` — 2-step flow (phone → OTP + new password)
-- [ ] `biometric_screen.dart` — local_auth fingerprint/FaceID
-- [ ] After login: register FCM token
+- [✅] 2026-03-08 `biometric_screen.dart` — local_auth fingerprint/FaceID with 3-failure fallback
+- [✅] 2026-03-08 After login: register FCM token via PUT /profile/fcm-token (fire-and-forget)
 - [✅] 2026-03-07 `flutter analyze` + `flutter test` — pass
 
 ---
@@ -106,10 +106,10 @@
 
 ## Phase 7: Speed Monitoring (Background Service)
 
-- [ ] Local SQLite buffer setup (speed_readings table)
-- [ ] `background_speed_service.dart` — flutter_background_service + GPS speed tracking
-- [ ] Speed alert UI (persistent top banner on violation)
-- [ ] Company speed settings stored locally
+- [✅] 2026-03-08 Local SQLite buffer setup (speed_readings table with insert/query/sync/clean)
+- [✅] 2026-03-08 `background_speed_service.dart` — GPS every 30s, batch upload every 5 readings, offline buffer
+- [✅] 2026-03-08 Speed alert UI (SpeedAlertBanner — persistent red banner, auto-dismiss)
+- [✅] 2026-03-08 Company speed settings stored locally (SpeedSettings via flutter_secure_storage)
 
 ---
 
@@ -145,4 +145,4 @@
 
 ---
 
-*Last updated: 2026-03-08 | Done: 40/52 (77%) | Remaining: Phase 3 (biometric, FCM), Phase 7 (speed monitoring), Phase 8 (polish)*
+*Last updated: 2026-03-08 | Done: 46/52 (88%) | Remaining: Phase 6 (Firebase setup), Phase 8 (polish + QA)*
