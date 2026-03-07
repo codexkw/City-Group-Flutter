@@ -117,7 +117,7 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
                               child: Text(
-                                'Accuracy: ${_position!.accuracy.toStringAsFixed(1)}m',
+                                '${l10n.accuracy}: ${_position!.accuracy.toStringAsFixed(1)}m',
                                 style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                               ),
                             ),

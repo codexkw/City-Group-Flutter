@@ -122,5 +122,6 @@
   "otp": "OTP",
   "tooManyAttempts": "बहुत अधिक प्रयास। कृपया बाद में पुनः प्रयास करें।",
   "radius": "त्रिज्या",
-  "speedMonitoring": "गति निगरानी"
+  "speedMonitoring": "गति निगरानी",
+  "accuracy": "सटीकता"
 }

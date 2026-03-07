@@ -82,9 +82,9 @@ class _TaskCompleteModalState extends State<TaskCompleteModal> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      Positioned(
+                      PositionedDirectional(
                         top: 0,
-                        right: 0,
+                        end: 0,
                         child: GestureDetector(
                           onTap: () => setState(() => _photoBase64s.removeAt(entry.key)),
                           child: Container(

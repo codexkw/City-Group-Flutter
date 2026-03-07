@@ -122,5 +122,6 @@
   "otp": "رمز التحقق",
   "tooManyAttempts": "محاولات كثيرة. يرجى المحاولة لاحقاً.",
   "radius": "نطاق",
-  "speedMonitoring": "مراقبة السرعة"
+  "speedMonitoring": "مراقبة السرعة",
+  "accuracy": "الدقة"
 }

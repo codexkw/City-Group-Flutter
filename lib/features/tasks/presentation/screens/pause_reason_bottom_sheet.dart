@@ -42,9 +42,9 @@ class _PauseReasonBottomSheetState extends State<PauseReasonBottomSheet> {
     return PopScope(
       canPop: false,
       child: Padding(
-        padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
+        padding: EdgeInsetsDirectional.only(
+          start: 16,
+          end: 16,
           top: 16,
           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
         ),

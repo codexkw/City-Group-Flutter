@@ -124,5 +124,6 @@
   "otp": "OTP",
   "tooManyAttempts": "Too many attempts. Please try again later.",
   "radius": "Radius",
-  "speedMonitoring": "Speed Monitoring"
+  "speedMonitoring": "Speed Monitoring",
+  "accuracy": "Accuracy"
 }

@@ -141,7 +141,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                                   Text(l10n.loading, style: const TextStyle(color: AppColors.textSecondary))
                                 else if (_position != null)
                                   Text(
-                                    '${_position!.latitude.toStringAsFixed(5)}, ${_position!.longitude.toStringAsFixed(5)}\nAccuracy: ${_position!.accuracy.toStringAsFixed(1)}m',
+                                    '${_position!.latitude.toStringAsFixed(5)}, ${_position!.longitude.toStringAsFixed(5)}\n${l10n.accuracy}: ${_position!.accuracy.toStringAsFixed(1)}m',
                                     style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                                   )
                                 else

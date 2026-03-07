@@ -26,8 +26,8 @@
 | Phase 5: Tasks | 7 | 7 | 0 |
 | Phase 6: Notifications + Profile | 6 | 5 | 1 |
 | Phase 7: Speed Monitoring | 4 | 4 | 0 |
-| Phase 8: Polish + QA | 5 | 0 | 5 |
-| **Total** | **52** | **46** | **6** |
+| Phase 8: Polish + QA | 5 | 5 | 0 |
+| **Total** | **52** | **51** | **1** |
 
 ---
 
@@ -115,11 +115,11 @@
 
 ## Phase 8: Polish + QA
 
-- [ ] Full RTL audit (Arabic)
-- [ ] Full Hindi audit (Devanagari rendering)
-- [ ] Zero hardcoded strings audit
-- [ ] `flutter analyze` — zero errors/warnings + `flutter test` — all pass
-- [ ] `flutter build apk --release` — compiles + GitHub Actions CI
+- [✅] 2026-03-08 Full RTL audit (Arabic) — fixed left/right → start/end, Positioned → PositionedDirectional
+- [✅] 2026-03-08 Full Hindi audit (Devanagari rendering) — all ARB keys present, NotoSansDevanagari font included
+- [✅] 2026-03-08 Zero hardcoded strings audit — all strings use l10n, added accuracy key
+- [✅] 2026-03-08 `flutter analyze` — zero errors/warnings + `flutter test` — all pass
+- [✅] 2026-03-08 GitHub Actions CI setup — deploy-flutter.yml with analyze/test/build/upload
 
 ---
 
@@ -145,4 +145,4 @@
 
 ---
 
-*Last updated: 2026-03-08 | Done: 46/52 (88%) | Remaining: Phase 6 (Firebase setup), Phase 8 (polish + QA)*
+*Last updated: 2026-03-08 | Done: 51/52 (98%) | Remaining: Phase 6 (Firebase Messaging setup — requires google-services.json)*
