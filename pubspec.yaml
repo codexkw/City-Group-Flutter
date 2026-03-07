@@ -1,0 +1,99 @@
+name: city_group_app
+description: City Group Attendance & Task Management Mobile App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # HTTP client
+  dio: ^5.4.3
+
+  # State management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Navigation
+  go_router: ^13.2.0
+
+  # GPS & Location
+  geolocator: ^11.0.0
+
+  # Camera & Photos
+  camera: ^0.10.5+9
+  image_picker: ^1.0.7
+
+  # Biometric Authentication
+  local_auth: ^2.2.0
+
+  # Background service (speed monitoring)
+  flutter_background_service: ^5.0.5
+  flutter_background_service_android: ^6.2.2
+
+  # Push Notifications
+  firebase_core: ^2.30.1
+  firebase_messaging: ^14.9.1
+
+  # Secure Storage (JWT tokens)
+  flutter_secure_storage: ^9.2.2
+
+  # Permissions
+  permission_handler: ^11.3.0
+
+  # Image caching
+  cached_network_image: ^3.3.1
+
+  # Internationalization
+  intl: ^0.19.0
+  flutter_localizations:
+    sdk: flutter
+
+  # Local database (speed log buffer when offline)
+  sqflite: ^2.3.3
+  path: ^1.9.0
+
+  # UI utilities
+  flutter_svg: ^2.0.10+1
+  shimmer: ^3.0.0
+  lottie: ^3.1.0
+
+  # Connectivity check
+  connectivity_plus: ^6.0.3
+
+  # App icon & splash
+  flutter_native_splash: ^2.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.9
+  riverpod_generator: ^2.4.0
+  flutter_gen_runner: ^5.4.0
+
+flutter:
+  uses-material-design: true
+
+  # Localization
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+
+  fonts:
+    - family: NotoSansArabic
+      fonts:
+        - asset: assets/fonts/NotoSansArabic-Regular.ttf
+        - asset: assets/fonts/NotoSansArabic-Bold.ttf
+          weight: 700
+    - family: NotoSansDevanagari
+      fonts:
+        - asset: assets/fonts/NotoSansDevanagari-Regular.ttf
+        - asset: assets/fonts/NotoSansDevanagari-Bold.ttf
+          weight: 700

@@ -1,0 +1,118 @@
+{
+  "@@locale": "en",
+
+  "appName": "City Group",
+  "@appName": { "description": "App name" },
+
+  "login": "Login",
+  "phoneNumber": "Phone Number",
+  "password": "Password",
+  "forgotPassword": "Forgot Password?",
+  "loginButton": "Login",
+  "biometricPrompt": "Authenticate with biometrics",
+  "loginError": "Invalid phone number or password",
+
+  "home": "Home",
+  "tasks": "Tasks",
+  "attendance": "Attendance",
+  "profile": "Profile",
+  "notifications": "Notifications",
+
+  "checkIn": "Check In",
+  "checkOut": "Check Out",
+  "checkedIn": "Checked In",
+  "checkedOut": "Checked Out",
+  "attendanceHistory": "Attendance History",
+  "totalHours": "Total Hours",
+  "status": "Status",
+  "onTime": "On Time",
+  "late": "Late",
+  "absent": "Absent",
+
+  "todaysTasks": "Today's Tasks",
+  "taskDetails": "Task Details",
+  "startTask": "Start Task",
+  "pauseTask": "Pause Task",
+  "resumeTask": "Resume Task",
+  "completeTask": "Complete Task",
+  "taskCompleted": "Task Completed",
+
+  "pauseReason": "Pause Reason",
+  "pauseReasonRequired": "Please select a reason to pause",
+  "reasonBreak": "Break",
+  "reasonWaitingEquipment": "Waiting for Equipment",
+  "reasonWaitingAccess": "Waiting for Access",
+  "reasonEmergency": "Emergency",
+  "reasonCustomerNotAvailable": "Customer Not Available",
+  "reasonOther": "Other",
+  "reasonOtherPlaceholder": "Please describe the reason...",
+  "confirmPause": "Confirm Pause",
+
+  "taskPriority": "Priority",
+  "priorityUrgent": "Urgent",
+  "priorityHigh": "High",
+  "priorityMedium": "Medium",
+  "priorityLow": "Low",
+
+  "location": "Location",
+  "outsideGeofence": "You are outside the required location",
+  "distanceFromLocation": "Distance: {distance}m from location",
+  "@distanceFromLocation": {
+    "placeholders": {
+      "distance": { "type": "int" }
+    }
+  },
+
+  "takeSelfie": "Take Selfie",
+  "retakePhoto": "Retake",
+  "confirmPhoto": "Confirm",
+  "photoInstructions": "Face the camera directly with good lighting",
+
+  "speed": "Speed",
+  "currentSpeed": "Current Speed",
+  "speedLimit": "Speed Limit",
+  "speedViolation": "Speed Limit Exceeded!",
+  "speedUnit": "km/h",
+
+  "languageSettings": "Language",
+  "english": "English",
+  "arabic": "العربية",
+  "hindi": "हिंदी",
+
+  "saveChanges": "Save Changes",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "loading": "Loading...",
+  "retry": "Retry",
+  "noData": "No data available",
+  "errorOccurred": "An error occurred. Please try again.",
+  "noInternet": "No internet connection",
+
+  "completionNotes": "Completion Notes (Optional)",
+  "addPhoto": "Add Photo",
+  "submit": "Submit",
+
+  "changePassword": "Change Password",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm New Password",
+
+  "markAsRead": "Mark as Read",
+  "markAllRead": "Mark All as Read",
+  "noNotifications": "No notifications",
+
+  "pending": "Pending",
+  "inProgress": "In Progress",
+  "paused": "Paused",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "elapsed": "Elapsed",
+  "estimated": "Estimated",
+  "dueTime": "Due Time",
+  "description": "Description",
+  "passwordChanged": "Password changed successfully",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "fieldRequired": "This field is required",
+  "minutes": "min",
+  "requiresPhoto": "Photo required"
+}

@@ -1,0 +1,116 @@
+{
+  "@@locale": "ar",
+
+  "appName": "سيتي جروب",
+  "login": "تسجيل الدخول",
+  "phoneNumber": "رقم الهاتف",
+  "password": "كلمة المرور",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "loginButton": "دخول",
+  "biometricPrompt": "المصادقة بالبيومتري",
+  "loginError": "رقم الهاتف أو كلمة المرور غير صحيحة",
+
+  "home": "الرئيسية",
+  "tasks": "المهام",
+  "attendance": "الحضور",
+  "profile": "الملف الشخصي",
+  "notifications": "الإشعارات",
+
+  "checkIn": "تسجيل الحضور",
+  "checkOut": "تسجيل الانصراف",
+  "checkedIn": "تم تسجيل الحضور",
+  "checkedOut": "تم تسجيل الانصراف",
+  "attendanceHistory": "سجل الحضور",
+  "totalHours": "إجمالي الساعات",
+  "status": "الحالة",
+  "onTime": "في الوقت",
+  "late": "متأخر",
+  "absent": "غائب",
+
+  "todaysTasks": "مهام اليوم",
+  "taskDetails": "تفاصيل المهمة",
+  "startTask": "بدء المهمة",
+  "pauseTask": "إيقاف مؤقت",
+  "resumeTask": "استئناف",
+  "completeTask": "إتمام المهمة",
+  "taskCompleted": "تم إتمام المهمة",
+
+  "pauseReason": "سبب الإيقاف",
+  "pauseReasonRequired": "يرجى اختيار سبب الإيقاف",
+  "reasonBreak": "استراحة",
+  "reasonWaitingEquipment": "انتظار المعدات",
+  "reasonWaitingAccess": "انتظار الوصول",
+  "reasonEmergency": "حالة طارئة",
+  "reasonCustomerNotAvailable": "العميل غير متاح",
+  "reasonOther": "أخرى",
+  "reasonOtherPlaceholder": "يرجى وصف السبب...",
+  "confirmPause": "تأكيد الإيقاف",
+
+  "taskPriority": "الأولوية",
+  "priorityUrgent": "عاجل",
+  "priorityHigh": "عالية",
+  "priorityMedium": "متوسطة",
+  "priorityLow": "منخفضة",
+
+  "location": "الموقع",
+  "outsideGeofence": "أنت خارج نطاق الموقع المطلوب",
+  "distanceFromLocation": "المسافة: {distance}م من الموقع",
+  "@distanceFromLocation": {
+    "placeholders": {
+      "distance": { "type": "int" }
+    }
+  },
+
+  "takeSelfie": "التقط صورة",
+  "retakePhoto": "إعادة التصوير",
+  "confirmPhoto": "تأكيد",
+  "photoInstructions": "انظر إلى الكاميرا مباشرة في إضاءة جيدة",
+
+  "speed": "السرعة",
+  "currentSpeed": "السرعة الحالية",
+  "speedLimit": "الحد الأقصى للسرعة",
+  "speedViolation": "تم تجاوز الحد الأقصى للسرعة!",
+  "speedUnit": "كم/ساعة",
+
+  "languageSettings": "اللغة",
+  "english": "English",
+  "arabic": "العربية",
+  "hindi": "हिंदी",
+
+  "saveChanges": "حفظ التغييرات",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "loading": "جارٍ التحميل...",
+  "retry": "إعادة المحاولة",
+  "noData": "لا توجد بيانات",
+  "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+  "noInternet": "لا يوجد اتصال بالإنترنت",
+
+  "completionNotes": "ملاحظات الإتمام (اختياري)",
+  "addPhoto": "إضافة صورة",
+  "submit": "إرسال",
+
+  "changePassword": "تغيير كلمة المرور",
+  "currentPassword": "كلمة المرور الحالية",
+  "newPassword": "كلمة المرور الجديدة",
+  "confirmPassword": "تأكيد كلمة المرور الجديدة",
+
+  "markAsRead": "تعيين كمقروء",
+  "markAllRead": "تعيين الكل كمقروء",
+  "noNotifications": "لا توجد إشعارات",
+
+  "pending": "قيد الانتظار",
+  "inProgress": "قيد التنفيذ",
+  "paused": "متوقف",
+  "completed": "مكتمل",
+  "cancelled": "ملغي",
+  "elapsed": "المنقضي",
+  "estimated": "المقدر",
+  "dueTime": "وقت الاستحقاق",
+  "description": "الوصف",
+  "passwordChanged": "تم تغيير كلمة المرور بنجاح",
+  "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+  "fieldRequired": "هذا الحقل مطلوب",
+  "minutes": "دقيقة",
+  "requiresPhoto": "مطلوب صورة"
+}

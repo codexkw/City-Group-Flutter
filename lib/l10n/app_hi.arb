@@ -1,0 +1,116 @@
+{
+  "@@locale": "hi",
+
+  "appName": "सिटी ग्रुप",
+  "login": "लॉगिन",
+  "phoneNumber": "फ़ोन नंबर",
+  "password": "पासवर्ड",
+  "forgotPassword": "पासवर्ड भूल गए?",
+  "loginButton": "लॉगिन करें",
+  "biometricPrompt": "बायोमेट्रिक से प्रमाणित करें",
+  "loginError": "फ़ोन नंबर या पासवर्ड गलत है",
+
+  "home": "होम",
+  "tasks": "कार्य",
+  "attendance": "उपस्थिति",
+  "profile": "प्रोफ़ाइल",
+  "notifications": "सूचनाएं",
+
+  "checkIn": "चेक इन",
+  "checkOut": "चेक आउट",
+  "checkedIn": "चेक इन हो गया",
+  "checkedOut": "चेक आउट हो गया",
+  "attendanceHistory": "उपस्थिति इतिहास",
+  "totalHours": "कुल घंटे",
+  "status": "स्थिति",
+  "onTime": "समय पर",
+  "late": "देर से",
+  "absent": "अनुपस्थित",
+
+  "todaysTasks": "आज के कार्य",
+  "taskDetails": "कार्य विवरण",
+  "startTask": "कार्य शुरू करें",
+  "pauseTask": "कार्य रोकें",
+  "resumeTask": "फिर से शुरू करें",
+  "completeTask": "कार्य पूरा करें",
+  "taskCompleted": "कार्य पूरा हुआ",
+
+  "pauseReason": "रोकने का कारण",
+  "pauseReasonRequired": "कृपया रोकने का कारण चुनें",
+  "reasonBreak": "विराम",
+  "reasonWaitingEquipment": "उपकरण की प्रतीक्षा",
+  "reasonWaitingAccess": "पहुंच की प्रतीक्षा",
+  "reasonEmergency": "आपातकाल",
+  "reasonCustomerNotAvailable": "ग्राहक उपलब्ध नहीं",
+  "reasonOther": "अन्य",
+  "reasonOtherPlaceholder": "कारण बताएं...",
+  "confirmPause": "रोकने की पुष्टि करें",
+
+  "taskPriority": "प्राथमिकता",
+  "priorityUrgent": "अत्यावश्यक",
+  "priorityHigh": "उच्च",
+  "priorityMedium": "मध्यम",
+  "priorityLow": "कम",
+
+  "location": "स्थान",
+  "outsideGeofence": "आप आवश्यक स्थान के बाहर हैं",
+  "distanceFromLocation": "दूरी: {distance}मी स्थान से",
+  "@distanceFromLocation": {
+    "placeholders": {
+      "distance": { "type": "int" }
+    }
+  },
+
+  "takeSelfie": "सेल्फी लें",
+  "retakePhoto": "फिर से लें",
+  "confirmPhoto": "पुष्टि करें",
+  "photoInstructions": "अच्छी रोशनी में सीधे कैमरे की ओर देखें",
+
+  "speed": "गति",
+  "currentSpeed": "वर्तमान गति",
+  "speedLimit": "गति सीमा",
+  "speedViolation": "गति सीमा पार हो गई!",
+  "speedUnit": "किमी/घंटा",
+
+  "languageSettings": "भाषा",
+  "english": "English",
+  "arabic": "العربية",
+  "hindi": "हिंदी",
+
+  "saveChanges": "परिवर्तन सहेजें",
+  "cancel": "रद्द करें",
+  "confirm": "पुष्टि करें",
+  "loading": "लोड हो रहा है...",
+  "retry": "पुनः प्रयास करें",
+  "noData": "कोई डेटा उपलब्ध नहीं",
+  "errorOccurred": "त्रुटि हुई। कृपया पुनः प्रयास करें।",
+  "noInternet": "इंटरनेट कनेक्शन नहीं है",
+
+  "completionNotes": "पूर्णता नोट्स (वैकल्पिक)",
+  "addPhoto": "फ़ोटो जोड़ें",
+  "submit": "सबमिट करें",
+
+  "changePassword": "पासवर्ड बदलें",
+  "currentPassword": "वर्तमान पासवर्ड",
+  "newPassword": "नया पासवर्ड",
+  "confirmPassword": "नए पासवर्ड की पुष्टि करें",
+
+  "markAsRead": "पढ़ा हुआ चिह्नित करें",
+  "markAllRead": "सभी को पढ़ा हुआ चिह्नित करें",
+  "noNotifications": "कोई सूचना नहीं",
+
+  "pending": "लंबित",
+  "inProgress": "प्रगति में",
+  "paused": "रुका हुआ",
+  "completed": "पूर्ण",
+  "cancelled": "रद्द",
+  "elapsed": "बीता हुआ",
+  "estimated": "अनुमानित",
+  "dueTime": "नियत समय",
+  "description": "विवरण",
+  "passwordChanged": "पासवर्ड सफलतापूर्वक बदल दिया गया",
+  "passwordsDoNotMatch": "पासवर्ड मेल नहीं खाते",
+  "fieldRequired": "यह फ़ील्ड आवश्यक है",
+  "minutes": "मिनट",
+  "requiresPhoto": "फ़ोटो आवश्यक"
+}
