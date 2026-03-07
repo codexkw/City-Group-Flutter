@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/error_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/attendance_provider.dart';
 
@@ -82,16 +83,16 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       await Future.delayed(const Duration(seconds: 2));
       if (mounted) context.pop();
     } on DioException catch (e) {
-      final code = e.response?.data?['error']?['code'] ?? '';
-      final message = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred;
+      final code = extractErrorCode(e);
+      final l10n = AppLocalizations.of(context);
       setState(() {
         _error = code == 'OUTSIDE_GEOFENCE'
-            ? AppLocalizations.of(context).outsideGeofence
-            : message;
+            ? l10n.outsideGeofence
+            : extractErrorMessage(e, l10n);
         _isSubmitting = false;
       });
     } catch (e) {
-      setState(() { _error = e.toString(); _isSubmitting = false; });
+      setState(() { _error = extractErrorMessage(e, AppLocalizations.of(context)); _isSubmitting = false; });
     }
   }
 

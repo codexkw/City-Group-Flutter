@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/utils/error_utils.dart';
 import '../providers/auth_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -38,14 +39,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     try {
-      await ref.read(authStateProvider.notifier).login(
-            _phoneController.text.trim(),
-            _passwordController.text,
-          );
+      final notifier = ref.read(authStateProvider.notifier);
+      await notifier.login(
+        _phoneController.text.trim(),
+        _passwordController.text,
+      );
+
+      // Check if login resulted in error state
+      final authState = ref.read(authStateProvider);
+      if (authState.hasError) {
+        setState(() => _errorMessage = extractErrorMessage(authState.error!, AppLocalizations.of(context)));
+      }
     } catch (e) {
-      setState(() {
-        _errorMessage = AppLocalizations.of(context).loginError;
-      });
+      setState(() => _errorMessage = extractErrorMessage(e, AppLocalizations.of(context)));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -99,7 +105,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return l10n.phoneNumber;
+                        return l10n.fieldRequired;
                       }
                       return null;
                     },
@@ -126,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return l10n.password;
+                        return l10n.fieldRequired;
                       }
                       return null;
                     },
@@ -147,17 +153,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   if (_errorMessage != null)
                     Container(
                       padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                         color: AppColors.danger.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
                       ),
-                      child: Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: AppColors.danger),
-                        textAlign: TextAlign.center,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.error_outline, color: AppColors.danger, size: 20),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              _errorMessage!,
+                              style: const TextStyle(color: AppColors.danger, fontSize: 14),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  if (_errorMessage != null) const SizedBox(height: 16),
 
                   // Login button
                   ElevatedButton(

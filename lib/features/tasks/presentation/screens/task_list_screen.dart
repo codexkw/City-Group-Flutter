@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/empty_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/task_provider.dart';
 
@@ -110,16 +111,7 @@ class TaskListScreen extends ConsumerWidget {
         ),
         data: (tasks) {
           if (tasks.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.task_alt, size: 64, color: AppColors.textHint),
-                  const SizedBox(height: 16),
-                  Text(l10n.noData, style: const TextStyle(color: AppColors.textSecondary)),
-                ],
-              ),
-            );
+            return EmptyState(icon: Icons.task_alt, message: l10n.noData);
           }
 
           // Sort: InProgress first, then Paused, then Pending, then by priority

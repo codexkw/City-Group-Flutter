@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/widgets/app_bottom_nav_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
@@ -115,23 +116,7 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          switch (index) {
-            case 0: break; // already on home
-            case 1: context.push(AppRoutes.tasks);
-            case 2: context.push(AppRoutes.attendanceHistory);
-            case 3: context.push(AppRoutes.profile);
-          }
-        },
-        items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.home), label: l10n.home),
-          BottomNavigationBarItem(icon: const Icon(Icons.task_alt), label: l10n.tasks),
-          BottomNavigationBarItem(icon: const Icon(Icons.access_time), label: l10n.attendance),
-          BottomNavigationBarItem(icon: const Icon(Icons.person), label: l10n.profile),
-        ],
-      ),
+      bottomNavigationBar: const AppBottomNavBar(currentIndex: 0),
     );
   }
 }

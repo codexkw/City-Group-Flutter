@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/empty_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/notifications_provider.dart';
 
@@ -96,16 +97,7 @@ class NotificationsScreen extends ConsumerWidget {
           final notifications = (notifData['notifications'] ?? []) as List;
 
           if (notifications.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.notifications_none, size: 64, color: AppColors.textHint),
-                  const SizedBox(height: 16),
-                  Text(l10n.noNotifications, style: const TextStyle(color: AppColors.textSecondary)),
-                ],
-              ),
-            );
+            return EmptyState(icon: Icons.notifications_none, message: l10n.noNotifications);
           }
 
           return RefreshIndicator(

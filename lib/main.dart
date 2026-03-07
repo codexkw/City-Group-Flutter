@@ -10,7 +10,11 @@ import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
+  } catch (_) {
+    // Firebase not configured yet — continue without push notifications
+  }
   runApp(const ProviderScope(child: CityGroupApp()));
 }
 

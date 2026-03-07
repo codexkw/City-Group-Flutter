@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/empty_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/attendance_provider.dart';
 
@@ -35,16 +36,7 @@ class AttendanceHistoryScreen extends ConsumerWidget {
         data: (data) {
           final records = (data['data']?['records'] ?? data['data'] ?? []) as List;
           if (records.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.calendar_today, size: 64, color: AppColors.textHint),
-                  const SizedBox(height: 16),
-                  Text(l10n.noData, style: const TextStyle(color: AppColors.textSecondary)),
-                ],
-              ),
-            );
+            return EmptyState(icon: Icons.calendar_today, message: l10n.noData);
           }
 
           return ListView.separated(

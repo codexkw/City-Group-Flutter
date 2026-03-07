@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/error_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/profile_repository.dart';
@@ -59,10 +60,9 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
         context.pop();
       }
     } on DioException catch (e) {
-      final message = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred;
-      setState(() => _error = message);
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     }
     setState(() => _isLoading = false);
   }

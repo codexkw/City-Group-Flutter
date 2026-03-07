@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/error_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 
@@ -39,7 +40,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       await repo.forgotPassword(_phoneController.text.trim());
       setState(() => _step = 2);
     } catch (e) {
-      setState(() => _errorMessage = AppLocalizations.of(context).errorOccurred);
+      setState(() => _errorMessage = extractErrorMessage(e, AppLocalizations.of(context)));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -47,7 +48,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
   Future<void> _resetPassword() async {
     if (_newPasswordController.text != _confirmPasswordController.text) {
-      setState(() => _errorMessage = 'Passwords do not match');
+      setState(() => _errorMessage = AppLocalizations.of(context).passwordsDoNotMatch);
       return;
     }
     setState(() { _isLoading = true; _errorMessage = null; });
@@ -61,7 +62,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       );
       if (mounted) context.go('/login');
     } catch (e) {
-      setState(() => _errorMessage = AppLocalizations.of(context).errorOccurred);
+      setState(() => _errorMessage = extractErrorMessage(e, AppLocalizations.of(context)));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

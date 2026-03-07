@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/error_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/task_provider.dart';
 import 'pause_reason_bottom_sheet.dart';
@@ -74,9 +75,9 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
-      setState(() => _error = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred);
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     }
     setState(() => _isActioning = false);
   }
@@ -103,9 +104,9 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
-      setState(() => _error = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred);
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     }
     setState(() => _isActioning = false);
   }
@@ -118,9 +119,9 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
-      setState(() => _error = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred);
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     }
     setState(() => _isActioning = false);
   }
@@ -160,9 +161,9 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         if (mounted) context.pop();
       }
     } on DioException catch (e) {
-      setState(() => _error = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred);
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     }
     setState(() => _isActioning = false);
   }

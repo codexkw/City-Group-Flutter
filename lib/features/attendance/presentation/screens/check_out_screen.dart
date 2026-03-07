@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/error_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/attendance_provider.dart';
 
@@ -62,10 +63,9 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
       await Future.delayed(const Duration(seconds: 2));
       if (mounted) context.pop();
     } on DioException catch (e) {
-      final message = e.response?.data?['error']?['message'] ?? AppLocalizations.of(context).errorOccurred;
-      setState(() { _error = message; _isSubmitting = false; });
+      setState(() { _error = extractErrorMessage(e, AppLocalizations.of(context)); _isSubmitting = false; });
     } catch (e) {
-      setState(() { _error = e.toString(); _isSubmitting = false; });
+      setState(() { _error = extractErrorMessage(e, AppLocalizations.of(context)); _isSubmitting = false; });
     }
   }
 

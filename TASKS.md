@@ -20,14 +20,14 @@
 | Phase | Total | Done | Remaining |
 |-------|-------|------|-----------|
 | Phase 1: Project Setup | 10 | 10 | 0 |
-| Phase 2: Core Infrastructure | 8 | 4 | 4 |
+| Phase 2: Core Infrastructure | 8 | 8 | 0 |
 | Phase 3: Auth Screens | 6 | 4 | 2 |
 | Phase 4: Home + Attendance | 6 | 6 | 0 |
 | Phase 5: Tasks | 7 | 7 | 0 |
 | Phase 6: Notifications + Profile | 6 | 5 | 1 |
 | Phase 7: Speed Monitoring | 4 | 0 | 4 |
 | Phase 8: Polish + QA | 5 | 0 | 5 |
-| **Total** | **52** | **36** | **16** |
+| **Total** | **52** | **40** | **12** |
 
 ---
 
@@ -52,10 +52,10 @@
 - [✅] 2026-03-07 `lib/core/router/app_router.dart` — GoRouter with 12 routes + auth guard
 - [✅] 2026-03-07 `lib/features/auth/presentation/providers/auth_provider.dart` — authState + locale
 - [✅] 2026-03-07 `lib/core/api/api_client.dart` — verified JWT interceptor
-- [ ] Request/Response model base classes (ApiResponse<T>, ApiError)
-- [ ] Shared widgets (LoadingButton, ErrorSnackBar, EmptyState, AppBottomNavBar)
-- [ ] `flutter analyze` — clean
-- [ ] `flutter test` — pass
+- [✅] 2026-03-08 Request/Response model base classes (ApiResponse<T>, ApiError, Pagination)
+- [✅] 2026-03-08 Shared widgets (LoadingButton, ErrorSnackBar, EmptyState, AppBottomNavBar)
+- [✅] 2026-03-08 `flutter analyze` — clean (0 errors, 0 warnings)
+- [✅] 2026-03-08 `flutter test` — pass
 
 ---
 
@@ -145,4 +145,4 @@
 
 ---
 
-*Last updated: 2026-03-08 | Done: 36/52 (69%) | Remaining: Phase 2 (shared widgets), Phase 3 (biometric, FCM), Phase 7 (speed monitoring), Phase 8 (polish)*
+*Last updated: 2026-03-08 | Done: 40/52 (77%) | Remaining: Phase 3 (biometric, FCM), Phase 7 (speed monitoring), Phase 8 (polish)*
