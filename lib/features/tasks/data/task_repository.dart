@@ -35,18 +35,31 @@ class TaskRepository {
   Future<void> pause(String id, {
     required String pauseReason,
     String? pauseReasonText,
+    double? latitude,
+    double? longitude,
   }) async {
     await _client.dio.post(
       ApiConstants.taskPause(id),
       data: {
         'pauseReason': pauseReason,
         if (pauseReasonText != null) 'pauseReasonText': pauseReasonText,
+        if (latitude != null) 'latitude': latitude,
+        if (longitude != null) 'longitude': longitude,
       },
     );
   }
 
-  Future<void> resume(String id) async {
-    await _client.dio.post(ApiConstants.taskResume(id));
+  Future<void> resume(String id, {
+    double? latitude,
+    double? longitude,
+  }) async {
+    await _client.dio.post(
+      ApiConstants.taskResume(id),
+      data: {
+        if (latitude != null) 'latitude': latitude,
+        if (longitude != null) 'longitude': longitude,
+      },
+    );
   }
 
   Future<void> complete(String id, {

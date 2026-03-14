@@ -153,12 +153,15 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     if (result == null) return;
 
     setState(() { _isActioning = true; _error = null; });
+    final pos = await _getPosition();
     try {
       final repo = ref.read(taskRepositoryProvider);
       await repo.pause(
         widget.taskId,
         pauseReason: result['pauseReason']!,
         pauseReasonText: result['pauseReasonText'],
+        latitude: pos?.latitude,
+        longitude: pos?.longitude,
       );
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
@@ -173,9 +176,10 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
 
   Future<void> _handleResume() async {
     setState(() { _isActioning = true; _error = null; });
+    final pos = await _getPosition();
     try {
       final repo = ref.read(taskRepositoryProvider);
-      await repo.resume(widget.taskId);
+      await repo.resume(widget.taskId, latitude: pos?.latitude, longitude: pos?.longitude);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
