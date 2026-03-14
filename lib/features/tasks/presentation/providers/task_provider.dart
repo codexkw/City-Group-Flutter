@@ -7,7 +7,7 @@ final taskRepositoryProvider = Provider<TaskRepository>((ref) {
   return TaskRepository(ref.read(apiClientProvider));
 });
 
-final todayTasksProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
+final todayTasksProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
   final repo = ref.read(taskRepositoryProvider);
   return repo.getToday();
 });

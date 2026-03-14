@@ -8,10 +8,31 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/error_utils.dart';
+import '../../../../core/utils/kuwait_time.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/task_provider.dart';
 import 'pause_reason_bottom_sheet.dart';
 import 'task_complete_modal.dart';
+
+String _localizedTaskTitle(Map<String, dynamic> task, String locale) {
+  if (locale == 'ar' && task['titleAr'] != null && (task['titleAr'] as String).isNotEmpty) {
+    return task['titleAr'];
+  }
+  if (locale == 'hi' && task['titleHi'] != null && (task['titleHi'] as String).isNotEmpty) {
+    return task['titleHi'];
+  }
+  return task['titleEn'] ?? task['title'] ?? '-';
+}
+
+String _localizedTaskDesc(Map<String, dynamic> task, String locale) {
+  if (locale == 'ar' && task['descriptionAr'] != null && (task['descriptionAr'] as String).isNotEmpty) {
+    return task['descriptionAr'];
+  }
+  if (locale == 'hi' && task['descriptionHi'] != null && (task['descriptionHi'] as String).isNotEmpty) {
+    return task['descriptionHi'];
+  }
+  return task['descriptionEn'] ?? task['description'] ?? '';
+}
 
 class TaskDetailScreen extends ConsumerStatefulWidget {
   final String taskId;
@@ -216,18 +237,18 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                task['title'] ?? '-',
+                                _localizedTaskTitle(task, Localizations.localeOf(context).languageCode),
                                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             _PriorityBadge(priority: priority, l10n: l10n),
                           ],
                         ),
-                        if (task['description'] != null && (task['description'] as String).isNotEmpty) ...[
+                        if (_localizedTaskDesc(task, Localizations.localeOf(context).languageCode).isNotEmpty) ...[
                           const SizedBox(height: 12),
                           Text(l10n.description, style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
                           const SizedBox(height: 4),
-                          Text(task['description'], style: const TextStyle(fontSize: 14)),
+                          Text(_localizedTaskDesc(task, Localizations.localeOf(context).languageCode), style: const TextStyle(fontSize: 14)),
                         ],
                       ],
                     ),
@@ -268,22 +289,20 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                           label: l10n.location,
                           value: task['location']?['name'] ?? task['locationName'] ?? '-',
                         ),
-                        if (task['estimatedMinutes'] != null) ...[
+                        if (task['estimatedDurationMinutes'] != null) ...[
                           const Divider(height: 20),
-                          _InfoRow(label: l10n.estimated, value: '${task['estimatedMinutes']} ${l10n.minutes}'),
+                          _InfoRow(label: l10n.estimated, value: '${task['estimatedDurationMinutes']} ${l10n.minutes}'),
                         ],
-                        if (task['dueTime'] != null) ...[
+                        if (task['dueDate'] != null) ...[
                           const Divider(height: 20),
                           _InfoRow(
                             label: l10n.dueTime,
-                            value: (task['dueTime'] as String).length >= 16
-                                ? (task['dueTime'] as String).substring(11, 16)
-                                : task['dueTime'],
+                            value: KuwaitTime.format(task['dueDate'] as String?),
                           ),
                         ],
-                        if (task['pausedMinutes'] != null && (task['pausedMinutes'] as num) > 0) ...[
+                        if (task['pausedDurationMinutes'] != null && (task['pausedDurationMinutes'] as num) > 0) ...[
                           const Divider(height: 20),
-                          _InfoRow(label: l10n.paused, value: '${task['pausedMinutes']} ${l10n.minutes}'),
+                          _InfoRow(label: l10n.paused, value: '${task['pausedDurationMinutes']} ${l10n.minutes}'),
                         ],
                         if (task['requirePhoto'] == true) ...[
                           const Divider(height: 20),

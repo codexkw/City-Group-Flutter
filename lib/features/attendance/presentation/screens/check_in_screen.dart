@@ -185,7 +185,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                             child: ListTile(
                               leading: const Icon(Icons.location_on, color: AppColors.primary),
                               title: Text(loc['nameEn'] ?? ''),
-                              subtitle: Text('${loc['address'] ?? ''}\n${l10n.radius}: ${loc['geofenceRadius']}m'),
+                              subtitle: Text('${loc['address'] ?? ''}\n${l10n.radius}: ${loc['geofenceRadiusMeters'] ?? loc['geofenceRadius'] ?? ''}m'),
                               trailing: isSelected ? const Icon(Icons.check_circle, color: AppColors.primary) : null,
                               onTap: () => setState(() => _selectedLocationId = id),
                             ),

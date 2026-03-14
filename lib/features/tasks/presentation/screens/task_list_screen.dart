@@ -7,6 +7,16 @@ import '../../../../core/widgets/empty_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/task_provider.dart';
 
+String _localizedTitle(Map<String, dynamic> task, String locale) {
+  if (locale == 'ar' && task['titleAr'] != null && (task['titleAr'] as String).isNotEmpty) {
+    return task['titleAr'];
+  }
+  if (locale == 'hi' && task['titleHi'] != null && (task['titleHi'] as String).isNotEmpty) {
+    return task['titleHi'];
+  }
+  return task['titleEn'] ?? task['title'] ?? '-';
+}
+
 class TaskListScreen extends ConsumerWidget {
   const TaskListScreen({super.key});
 
@@ -137,7 +147,8 @@ class TaskListScreen extends ConsumerWidget {
                 final task = sorted[index];
                 final status = task['status'] ?? 'Pending';
                 final priority = task['priority'] ?? 'Medium';
-                final estimatedMin = task['estimatedMinutes'] as int? ?? 0;
+                final estimatedMin = task['estimatedDurationMinutes'] as int? ?? 0;
+                final locale = Localizations.localeOf(context).languageCode;
 
                 return Card(
                   child: InkWell(
@@ -154,7 +165,7 @@ class TaskListScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  task['title'] ?? '-',
+                                  _localizedTitle(task, locale),
                                   style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
