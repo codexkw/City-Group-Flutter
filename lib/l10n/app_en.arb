@@ -85,6 +85,7 @@
   "loading": "Loading...",
   "retry": "Retry",
   "noData": "No data available",
+  "all": "All",
   "errorOccurred": "An error occurred. Please try again.",
   "noInternet": "No internet connection",
 

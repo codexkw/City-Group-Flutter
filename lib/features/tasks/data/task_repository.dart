@@ -5,8 +5,11 @@ class TaskRepository {
   final ApiClient _client;
   TaskRepository(this._client);
 
-  Future<List<Map<String, dynamic>>> getToday() async {
-    final response = await _client.dio.get(ApiConstants.tasksToday);
+  Future<List<Map<String, dynamic>>> getToday({String? status, DateTime? date}) async {
+    final queryParams = <String, dynamic>{};
+    if (status != null) queryParams['status'] = status;
+    if (date != null) queryParams['date'] = date.toIso8601String().split('T').first;
+    final response = await _client.dio.get(ApiConstants.tasksToday, queryParameters: queryParams);
     final data = response.data['data'];
     if (data is List) return data.cast<Map<String, dynamic>>();
     return [];
