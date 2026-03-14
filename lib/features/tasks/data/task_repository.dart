@@ -62,8 +62,8 @@ class TaskRepository {
         'latitude': latitude,
         'longitude': longitude,
         'accuracy': accuracy,
-        if (completionNotes != null) 'completionNotes': completionNotes,
-        if (photos != null) 'photos': photos,
+        if (completionNotes != null) 'notes': completionNotes,
+        if (photos != null) 'photosBase64': photos,
       },
     );
   }
