@@ -45,22 +45,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         fullPhone,
         _passwordController.text,
       );
-
-      // Check if login resulted in error state
-      if (!mounted) return;
-      final authState = ref.read(authStateProvider);
-      if (authState.hasError) {
-        setState(() => _errorMessage = extractErrorMessage(authState.error!, AppLocalizations.of(context)));
-      }
+      // Login succeeded — router will navigate to home
     } catch (e) {
       if (!mounted) return;
-      setState(() => _errorMessage = extractErrorMessage(e, AppLocalizations.of(context)));
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      setState(() {
+        _errorMessage = extractErrorMessage(e, AppLocalizations.of(context));
+        _isLoading = false;
+      });
+      return;
+    }
+    if (mounted) {
+      setState(() => _isLoading = false);
     }
   }
 

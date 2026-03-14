@@ -52,10 +52,20 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
         return;
       }
 
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      ).timeout(const Duration(seconds: 10));
-      setState(() { _position = position; _isLoadingGps = false; });
+      Position? position;
+      try {
+        position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.low,
+        ).timeout(const Duration(seconds: 10));
+      } catch (_) {
+        position = await Geolocator.getLastKnownPosition();
+      }
+
+      if (position != null) {
+        setState(() { _position = position; _isLoadingGps = false; });
+      } else {
+        setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
+      }
     } catch (e) {
       setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
     }

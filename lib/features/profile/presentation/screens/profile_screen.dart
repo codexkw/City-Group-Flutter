@@ -68,7 +68,7 @@ class ProfileScreen extends ConsumerWidget {
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.logout, color: AppColors.danger),
-                  title: Text(l10n.login, style: const TextStyle(color: AppColors.danger)),
+                  title: Text(l10n.logout, style: const TextStyle(color: AppColors.danger)),
                   onTap: () async {
                     await ref.read(authStateProvider.notifier).logout();
                   },

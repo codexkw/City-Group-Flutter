@@ -99,6 +99,7 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
       _registerFcmToken();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
+      rethrow;
     }
   }
 

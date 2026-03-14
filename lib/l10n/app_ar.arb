@@ -3,6 +3,7 @@
 
   "appName": "سيتي جروب",
   "login": "تسجيل الدخول",
+  "logout": "تسجيل الخروج",
   "phoneNumber": "رقم الهاتف",
   "password": "كلمة المرور",
   "forgotPassword": "نسيت كلمة المرور؟",

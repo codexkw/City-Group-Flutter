@@ -33,10 +33,39 @@ class _CheckOutScreenState extends ConsumerState<CheckOutScreen> {
   Future<void> _getLocation() async {
     setState(() { _isLoadingGps = true; _error = null; });
     try {
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      setState(() { _position = position; _isLoadingGps = false; });
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() { _error = AppLocalizations.of(context).locationServicesDisabled; _isLoadingGps = false; });
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() { _error = AppLocalizations.of(context).locationPermissionDenied; _isLoadingGps = false; });
+          return;
+        }
+      }
+      if (permission == LocationPermission.deniedForever) {
+        setState(() { _error = AppLocalizations.of(context).locationPermissionPermanentlyDenied; _isLoadingGps = false; });
+        return;
+      }
+
+      Position? position;
+      try {
+        position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.low,
+        ).timeout(const Duration(seconds: 10));
+      } catch (_) {
+        position = await Geolocator.getLastKnownPosition();
+      }
+
+      if (position != null) {
+        setState(() { _position = position; _isLoadingGps = false; });
+      } else {
+        setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
+      }
     } catch (e) {
       setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
     }

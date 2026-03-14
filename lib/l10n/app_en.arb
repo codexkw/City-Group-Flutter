@@ -5,6 +5,7 @@
   "@appName": { "description": "App name" },
 
   "login": "Login",
+  "logout": "Logout",
   "phoneNumber": "Phone Number",
   "password": "Password",
   "forgotPassword": "Forgot Password?",
