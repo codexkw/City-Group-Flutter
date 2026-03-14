@@ -111,6 +111,7 @@
   "passwordChanged": "تم تغيير كلمة المرور بنجاح",
   "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
   "fieldRequired": "هذا الحقل مطلوب",
+  "invalidPhoneNumber": "يرجى إدخال رقم هاتف صحيح مكون من 8 أرقام",
   "minutes": "دقيقة",
   "requiresPhoto": "مطلوب صورة",
   "gpsReady": "GPS جاهز",

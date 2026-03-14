@@ -34,7 +34,15 @@ class AttendanceHistoryScreen extends ConsumerWidget {
           ),
         ),
         data: (data) {
-          final records = (data['data']?['records'] ?? data['data'] ?? []) as List;
+          final rawData = data['data'];
+          final List records;
+          if (rawData is List) {
+            records = rawData;
+          } else if (rawData is Map) {
+            records = (rawData['records'] ?? []) as List;
+          } else {
+            records = [];
+          }
           if (records.isEmpty) {
             return EmptyState(icon: Icons.calendar_today, message: l10n.noData);
           }
@@ -71,7 +79,7 @@ class AttendanceHistoryScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              record['date'] ?? record['checkInTime']?.toString().substring(0, 10) ?? '-',
+                              record['attendanceDate'] ?? record['date'] ?? record['checkInTime']?.toString().substring(0, 10) ?? '-',
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),

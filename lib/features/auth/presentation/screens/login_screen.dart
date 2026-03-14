@@ -40,21 +40,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     try {
       final notifier = ref.read(authStateProvider.notifier);
+      final fullPhone = '+965${_phoneController.text.trim()}';
       await notifier.login(
-        _phoneController.text.trim(),
+        fullPhone,
         _passwordController.text,
       );
 
       // Check if login resulted in error state
+      if (!mounted) return;
       final authState = ref.read(authStateProvider);
       if (authState.hasError) {
         setState(() => _errorMessage = extractErrorMessage(authState.error!, AppLocalizations.of(context)));
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() => _errorMessage = extractErrorMessage(e, AppLocalizations.of(context)));
     } finally {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -98,14 +103,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     textDirection: TextDirection.ltr,
+                    maxLength: 8,
                     decoration: InputDecoration(
                       labelText: l10n.phoneNumber,
-                      hintText: '+96512345678',
+                      hintText: '12345678',
                       prefixIcon: const Icon(Icons.phone_outlined),
+                      prefixText: '+965 ',
+                      counterText: '',
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return l10n.fieldRequired;
+                      }
+                      if (value.trim().length != 8) {
+                        return l10n.invalidPhoneNumber;
                       }
                       return null;
                     },

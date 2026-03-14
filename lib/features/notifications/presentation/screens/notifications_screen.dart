@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/kuwait_time.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/notifications_provider.dart';
@@ -47,8 +48,9 @@ class NotificationsScreen extends ConsumerWidget {
   String _formatTime(String? dateStr) {
     if (dateStr == null) return '';
     try {
-      final dt = DateTime.parse(dateStr);
-      final now = DateTime.now();
+      final dt = KuwaitTime.parse(dateStr);
+      if (dt == null) return '';
+      final now = KuwaitTime.now;
       final diff = now.difference(dt);
       if (diff.inMinutes < 60) return '${diff.inMinutes}m';
       if (diff.inHours < 24) return '${diff.inHours}h';

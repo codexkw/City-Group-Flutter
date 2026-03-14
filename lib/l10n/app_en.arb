@@ -113,6 +113,7 @@
   "passwordChanged": "Password changed successfully",
   "passwordsDoNotMatch": "Passwords do not match",
   "fieldRequired": "This field is required",
+  "invalidPhoneNumber": "Please enter a valid 8-digit phone number",
   "minutes": "min",
   "requiresPhoto": "Photo required",
   "gpsReady": "GPS Ready",

@@ -111,6 +111,7 @@
   "passwordChanged": "पासवर्ड सफलतापूर्वक बदल दिया गया",
   "passwordsDoNotMatch": "पासवर्ड मेल नहीं खाते",
   "fieldRequired": "यह फ़ील्ड आवश्यक है",
+  "invalidPhoneNumber": "कृपया 8 अंकों का वैध फ़ोन नंबर दर्ज करें",
   "minutes": "मिनट",
   "requiresPhoto": "फ़ोटो आवश्यक",
   "gpsReady": "GPS तैयार",
