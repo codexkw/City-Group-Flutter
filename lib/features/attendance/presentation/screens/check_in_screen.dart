@@ -53,8 +53,8 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       }
 
       final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+        desiredAccuracy: LocationAccuracy.low,
+      ).timeout(const Duration(seconds: 10));
       setState(() { _position = position; _isLoadingGps = false; });
     } catch (e) {
       setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });

@@ -75,29 +75,68 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
 
   Future<Position?> _getPosition() async {
     try {
-      return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-    } catch (_) {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      debugPrint('[TASK] Location service enabled: $serviceEnabled');
+      if (!serviceEnabled) {
+        setState(() => _error = AppLocalizations.of(context).locationServicesDisabled);
+        return null;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      debugPrint('[TASK] Location permission: $permission');
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() => _error = AppLocalizations.of(context).locationPermissionDenied);
+          return null;
+        }
+      }
+      if (permission == LocationPermission.deniedForever) {
+        setState(() => _error = AppLocalizations.of(context).locationPermissionPermanentlyDenied);
+        return null;
+      }
+
+      debugPrint('[TASK] Getting current position...');
+      try {
+        final pos = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.low,
+        ).timeout(const Duration(seconds: 10));
+        debugPrint('[TASK] Got position: ${pos.latitude}, ${pos.longitude}');
+        return pos;
+      } catch (e) {
+        debugPrint('[TASK] getCurrentPosition error: $e, trying last known...');
+        final last = await Geolocator.getLastKnownPosition();
+        debugPrint('[TASK] Last known position: ${last?.latitude}, ${last?.longitude}');
+        if (last != null) return last;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('[TASK] _getPosition error: $e');
       return null;
     }
   }
 
   Future<void> _handleStart() async {
     setState(() { _isActioning = true; _error = null; });
+    debugPrint('[TASK] _handleStart called');
     final pos = await _getPosition();
+    debugPrint('[TASK] Position result: $pos');
     if (pos == null) {
-      setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isActioning = false; });
+      setState(() { _error ??= AppLocalizations.of(context).failedToGetLocation; _isActioning = false; });
       return;
     }
     try {
+      debugPrint('[TASK] Calling API start with lat=${pos.latitude}, lng=${pos.longitude}');
       final repo = ref.read(taskRepositoryProvider);
       await repo.start(widget.taskId, latitude: pos.latitude, longitude: pos.longitude, accuracy: pos.accuracy);
+      debugPrint('[TASK] API start succeeded');
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
+      debugPrint('[TASK] API error: ${e.response?.statusCode} ${e.response?.data}');
       setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     } catch (e) {
+      debugPrint('[TASK] Unexpected error: $e');
       setState(() => _error = extractErrorMessage(e, AppLocalizations.of(context)));
     }
     setState(() => _isActioning = false);
@@ -158,7 +197,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     setState(() { _isActioning = true; _error = null; });
     final pos = await _getPosition();
     if (pos == null) {
-      setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isActioning = false; });
+      setState(() { _error ??= AppLocalizations.of(context).failedToGetLocation; _isActioning = false; });
       return;
     }
     try {

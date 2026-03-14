@@ -17,12 +17,12 @@ class TaskRepository {
     return response.data['data'] as Map<String, dynamic>;
   }
 
-  Future<Map<String, dynamic>> start(String id, {
+  Future<void> start(String id, {
     required double latitude,
     required double longitude,
     required double accuracy,
   }) async {
-    final response = await _client.dio.post(
+    await _client.dio.post(
       ApiConstants.taskStart(id),
       data: {
         'latitude': latitude,
@@ -30,36 +30,33 @@ class TaskRepository {
         'accuracy': accuracy,
       },
     );
-    return response.data['data'] as Map<String, dynamic>;
   }
 
-  Future<Map<String, dynamic>> pause(String id, {
+  Future<void> pause(String id, {
     required String pauseReason,
     String? pauseReasonText,
   }) async {
-    final response = await _client.dio.post(
+    await _client.dio.post(
       ApiConstants.taskPause(id),
       data: {
         'pauseReason': pauseReason,
         if (pauseReasonText != null) 'pauseReasonText': pauseReasonText,
       },
     );
-    return response.data['data'] as Map<String, dynamic>;
   }
 
-  Future<Map<String, dynamic>> resume(String id) async {
-    final response = await _client.dio.post(ApiConstants.taskResume(id));
-    return response.data['data'] as Map<String, dynamic>;
+  Future<void> resume(String id) async {
+    await _client.dio.post(ApiConstants.taskResume(id));
   }
 
-  Future<Map<String, dynamic>> complete(String id, {
+  Future<void> complete(String id, {
     required double latitude,
     required double longitude,
     required double accuracy,
     String? completionNotes,
     List<String>? photos,
   }) async {
-    final response = await _client.dio.post(
+    await _client.dio.post(
       ApiConstants.taskComplete(id),
       data: {
         'latitude': latitude,
@@ -69,6 +66,5 @@ class TaskRepository {
         if (photos != null) 'photos': photos,
       },
     );
-    return response.data['data'] as Map<String, dynamic>;
   }
 }
