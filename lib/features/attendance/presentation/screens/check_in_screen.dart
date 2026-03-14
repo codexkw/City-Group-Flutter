@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/error_utils.dart';
@@ -23,6 +27,8 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   String? _error;
   String? _successMessage;
   int? _selectedLocationId;
+  File? _selfieFile;
+  String? _selfieBase64;
 
   @override
   void initState() {
@@ -71,6 +77,25 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     }
   }
 
+  Future<void> _takeSelfie() async {
+    final picker = ImagePicker();
+    final photo = await picker.pickImage(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
+      maxWidth: 800,
+      maxHeight: 800,
+      imageQuality: 80,
+    );
+    if (photo != null) {
+      final file = File(photo.path);
+      final bytes = await file.readAsBytes();
+      setState(() {
+        _selfieFile = file;
+        _selfieBase64 = base64Encode(bytes);
+      });
+    }
+  }
+
   Future<void> _handleCheckIn() async {
     if (_position == null || _selectedLocationId == null) return;
 
@@ -82,6 +107,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
         latitude: _position!.latitude,
         longitude: _position!.longitude,
         accuracy: _position!.accuracy,
+        photoBase64: _selfieBase64,
       );
 
       final status = result['status'] ?? '';
@@ -95,12 +121,21 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     } on DioException catch (e) {
       final code = extractErrorCode(e);
       final l10n = AppLocalizations.of(context);
-      setState(() {
-        _error = code == 'OUTSIDE_GEOFENCE'
-            ? l10n.outsideGeofence
-            : extractErrorMessage(e, l10n);
-        _isSubmitting = false;
-      });
+      String errorMsg;
+      switch (code) {
+        case 'OUTSIDE_GEOFENCE':
+          errorMsg = l10n.outsideGeofence;
+          break;
+        case 'ALREADY_CHECKED_IN':
+          errorMsg = l10n.alreadyCheckedIn;
+          break;
+        case 'GPS_ACCURACY_LOW':
+          errorMsg = l10n.gpsAccuracyLow;
+          break;
+        default:
+          errorMsg = extractErrorMessage(e, l10n);
+      }
+      setState(() { _error = errorMsg; _isSubmitting = false; });
     } catch (e) {
       setState(() { _error = extractErrorMessage(e, AppLocalizations.of(context)); _isSubmitting = false; });
     }
@@ -124,7 +159,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                 ],
               ),
             )
-          : Padding(
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,8 +241,41 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                     loading: () => const Center(child: CircularProgressIndicator()),
                     error: (e, _) => Text(l10n.errorOccurred, style: const TextStyle(color: AppColors.danger)),
                   ),
+                  const SizedBox(height: 16),
 
-                  const Spacer(),
+                  // Selfie Photo
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          if (_selfieFile != null) ...[
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.file(_selfieFile!, height: 200, width: double.infinity, fit: BoxFit.cover),
+                            ),
+                            const SizedBox(height: 12),
+                            OutlinedButton.icon(
+                              onPressed: _takeSelfie,
+                              icon: const Icon(Icons.camera_alt),
+                              label: Text(l10n.retakePhoto),
+                            ),
+                          ] else ...[
+                            Icon(Icons.camera_alt, size: 48, color: AppColors.textSecondary.withValues(alpha: 0.5)),
+                            const SizedBox(height: 8),
+                            Text(l10n.photoInstructions, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13), textAlign: TextAlign.center),
+                            const SizedBox(height: 12),
+                            OutlinedButton.icon(
+                              onPressed: _takeSelfie,
+                              icon: const Icon(Icons.camera_alt),
+                              label: Text(l10n.takeSelfie),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
                   // Error
                   if (_error != null && _position != null)
