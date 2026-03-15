@@ -15,7 +15,7 @@ class ProfileRepository {
       ApiConstants.profile,
       data: {
         if (email != null) 'email': email,
-        if (profilePhotoBase64 != null) 'profilePhotoBase64': profilePhotoBase64,
+        if (profilePhotoBase64 != null) 'photoBase64': profilePhotoBase64,
       },
     );
   }
