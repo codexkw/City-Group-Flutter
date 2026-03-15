@@ -54,9 +54,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       });
       return;
     }
-    if (mounted) {
-      setState(() => _isLoading = false);
-    }
+    // Login succeeded — router navigates away, no need to update state
   }
 
   @override
