@@ -50,9 +50,9 @@ class UserData {
     final employee = json['employee'] as Map<String, dynamic>? ?? json;
     return UserData(
       id: employee['id'] is int ? employee['id'] : 0,
-      fullName: employee['fullName'] ?? employee['fullNameEn'] ?? '',
+      fullName: employee['fullName'] ?? employee['fullNameEn'] ?? employee['fullName'] ?? '',
       role: employee['role'] ?? 'Employee',
-      language: employee['language'] ?? 'en',
+      language: employee['language'] ?? employee['preferredLanguage'] ?? 'en',
       profilePhotoUrl: employee['profilePhotoUrl'],
       companyId: employee['companyId'] is int ? employee['companyId'] : 0,
       companyName: employee['companyName'] ?? employee['companyNameEn'] ?? '',
@@ -67,10 +67,22 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
     final client = ref.read(apiClientProvider);
     final token = await client.getToken();
     if (token == null) return null;
-    // Token exists — user was previously logged in
-    // We don't have the user data cached, so return a minimal placeholder
-    // A full profile fetch will happen on the home screen
-    return null;
+
+    // Token exists — try to restore session by fetching profile
+    try {
+      final profileRepo = ProfileRepository(client);
+      final profile = await profileRepo.getProfile();
+      final userData = UserData.fromJson(profile);
+      ref.read(localeProvider.notifier).state = Locale(userData.language);
+      _registerFcmToken();
+      return userData;
+    } catch (_) {
+      // Token expired — the interceptor will try refresh automatically
+      // If refresh also fails, interceptor clears tokens
+      // Return null to show login screen
+      await client.clearTokens();
+      return null;
+    }
   }
 
   Future<void> login(String phoneNumber, String password) async {
