@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
+import 'features/speed_monitor/services/background_speed_service.dart';
 import 'l10n/app_localizations.dart';
 
 /// Global navigator key for showing foreground notification snackbars.
@@ -22,6 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await BackgroundSpeedService.initialize();
   runApp(const ProviderScope(child: CityGroupApp()));
 }
 
@@ -84,6 +86,9 @@ class _CityGroupAppState extends ConsumerState<CityGroupApp> {
       router.push('/tasks/$referenceId');
     } else if (type == 'attendance') {
       router.push('/attendance-history');
+    } else if (type == 'speed_violation') {
+      // Navigate to notifications screen for speed violation alerts
+      router.push('/notifications');
     }
   }
 

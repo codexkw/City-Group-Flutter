@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/api/api_client.dart';
 import '../../../profile/data/profile_repository.dart';
+import '../../../speed_monitor/services/background_speed_service.dart';
+import '../../../speed_monitor/services/speed_settings.dart';
 import '../../data/auth_repository.dart';
 
 // Secure storage provider
@@ -35,6 +37,9 @@ class UserData {
   final String? profilePhotoUrl;
   final int companyId;
   final String companyName;
+  final int speedLimitKmh;
+  final int speedWarningThresholdKmh;
+  final bool enableSpeedMonitoring;
 
   UserData({
     required this.id,
@@ -44,6 +49,9 @@ class UserData {
     this.profilePhotoUrl,
     required this.companyId,
     required this.companyName,
+    this.speedLimitKmh = 120,
+    this.speedWarningThresholdKmh = 100,
+    this.enableSpeedMonitoring = true,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -56,6 +64,9 @@ class UserData {
       profilePhotoUrl: employee['profilePhotoUrl'],
       companyId: employee['companyId'] is int ? employee['companyId'] : 0,
       companyName: employee['companyName'] ?? employee['companyNameEn'] ?? '',
+      speedLimitKmh: employee['speedLimitKmh'] is int ? employee['speedLimitKmh'] : 120,
+      speedWarningThresholdKmh: employee['speedWarningThresholdKmh'] is int ? employee['speedWarningThresholdKmh'] : 100,
+      enableSpeedMonitoring: employee['enableSpeedMonitoring'] ?? true,
     );
   }
 }
@@ -74,6 +85,11 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
       final profile = await profileRepo.getProfile();
       final userData = UserData.fromJson(profile);
       ref.read(localeProvider.notifier).state = Locale(userData.language);
+      // Save speed settings locally for background service
+      await SpeedSettings.save(
+        speedLimitKmh: userData.speedLimitKmh.toDouble(),
+        speedWarningKmh: userData.speedWarningThresholdKmh.toDouble(),
+      );
       _registerFcmToken();
       return userData;
     } catch (_) {
@@ -105,6 +121,12 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
       // Update locale based on user language preference
       ref.read(localeProvider.notifier).state = Locale(userData.language);
 
+      // Save speed settings locally for background service
+      await SpeedSettings.save(
+        speedLimitKmh: userData.speedLimitKmh.toDouble(),
+        speedWarningKmh: userData.speedWarningThresholdKmh.toDouble(),
+      );
+
       state = AsyncValue.data(userData);
 
       // Register FCM token (fire-and-forget — don't block login)
@@ -129,6 +151,8 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
 
   Future<void> logout() async {
     try {
+      await BackgroundSpeedService.stopMonitoring();
+      await SpeedSettings.clear();
       final repo = ref.read(authRepositoryProvider);
       await repo.logout();
     } catch (_) {

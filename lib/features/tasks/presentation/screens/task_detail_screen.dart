@@ -10,6 +10,8 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/error_utils.dart';
 import '../../../../core/utils/kuwait_time.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../speed_monitor/services/background_speed_service.dart';
+import '../../../speed_monitor/presentation/widgets/speed_alert_banner.dart';
 import '../providers/task_provider.dart';
 import 'pause_reason_bottom_sheet.dart';
 import 'task_complete_modal.dart';
@@ -47,10 +49,23 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
   int _elapsedSeconds = 0;
   bool _isActioning = false;
   String? _error;
+  double? _currentSpeed;
+  StreamSubscription<Map<String, dynamic>?>? _speedSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _speedSub = BackgroundSpeedService.speedStream.listen((data) {
+      if (data != null && mounted) {
+        setState(() => _currentSpeed = (data['speedKmh'] as num?)?.toDouble());
+      }
+    });
+  }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _speedSub?.cancel();
     super.dispose();
   }
 
@@ -130,6 +145,8 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       final repo = ref.read(taskRepositoryProvider);
       await repo.start(widget.taskId, latitude: pos.latitude, longitude: pos.longitude, accuracy: pos.accuracy);
       debugPrint('[TASK] API start succeeded');
+      // Start speed monitoring
+      await BackgroundSpeedService.startMonitoring(widget.taskId);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
@@ -163,6 +180,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         latitude: pos?.latitude,
         longitude: pos?.longitude,
       );
+      await BackgroundSpeedService.stopMonitoring();
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
@@ -180,6 +198,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     try {
       final repo = ref.read(taskRepositoryProvider);
       await repo.resume(widget.taskId, latitude: pos?.latitude, longitude: pos?.longitude);
+      await BackgroundSpeedService.startMonitoring(widget.taskId);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
@@ -214,6 +233,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         completionNotes: result['notes'] as String?,
         photos: (result['photos'] as List?)?.cast<String>(),
       );
+      await BackgroundSpeedService.stopMonitoring();
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
@@ -237,7 +257,8 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     final l10n = AppLocalizations.of(context);
     final taskAsync = ref.watch(taskDetailProvider(widget.taskId));
 
-    return Scaffold(
+    return SpeedAlertBanner(
+      child: Scaffold(
       appBar: AppBar(title: Text(l10n.taskDetails)),
       body: taskAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -313,6 +334,20 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                             _formatElapsed(_elapsedSeconds),
                             style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
                           ),
+                          if (_currentSpeed != null) ...[
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.speed, color: Colors.white70, size: 18),
+                                const SizedBox(width: 6),
+                                Text(
+                                  '${_currentSpeed!.toStringAsFixed(0)} ${l10n.speedUnit}',
+                                  style: const TextStyle(color: Colors.white70, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -447,6 +482,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
           );
         },
       ),
+    ),
     );
   }
 
