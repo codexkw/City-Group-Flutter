@@ -15,7 +15,8 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final authState = ref.watch(authStateProvider);
-    final userName = authState.value?.fullName ?? '';
+    final user = authState.value;
+    final userName = user?.fullName ?? '';
 
     return Scaffold(
       appBar: AppBar(
@@ -38,10 +39,15 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(20),
                 child: Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 28,
                       backgroundColor: AppColors.primary,
-                      child: Icon(Icons.person, color: Colors.white, size: 28),
+                      backgroundImage: user?.profilePhotoUrl != null
+                          ? NetworkImage(user!.profilePhotoUrl!)
+                          : null,
+                      child: user?.profilePhotoUrl == null
+                          ? const Icon(Icons.person, color: Colors.white, size: 28)
+                          : null,
                     ),
                     const SizedBox(width: 16),
                     Expanded(
