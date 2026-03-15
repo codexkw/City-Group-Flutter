@@ -53,4 +53,5 @@ class ApiConstants {
   static const String profileLanguage = '/profile/language';
   static const String profilePassword = '/profile/password';
   static const String profileFcmToken = '/profile/fcm-token';
+  static const String profileLocation = '/profile/location';
 }

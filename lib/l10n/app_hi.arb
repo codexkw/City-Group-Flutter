@@ -129,5 +129,7 @@
   "accuracy": "सटीकता",
   "alreadyCheckedIn": "आपने आज पहले ही चेक इन कर लिया है",
   "gpsAccuracyLow": "GPS सटीकता बहुत कम है। कृपया खुली जगह पर जाएं और पुनः प्रयास करें।",
-  "notCheckedIn": "आज के लिए कोई सक्रिय चेक-इन नहीं मिला"
+  "notCheckedIn": "आज के लिए कोई सक्रिय चेक-इन नहीं मिला",
+  "locationTrackingActive": "स्थान ट्रैकिंग सक्रिय",
+  "locationPermissionRequired": "ट्रैकिंग के लिए स्थान अनुमति आवश्यक है"
 }

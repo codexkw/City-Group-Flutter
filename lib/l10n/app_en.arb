@@ -131,5 +131,7 @@
   "accuracy": "Accuracy",
   "alreadyCheckedIn": "You have already checked in today",
   "gpsAccuracyLow": "GPS accuracy is too low. Please move to an open area and try again.",
-  "notCheckedIn": "No active check-in found for today"
+  "notCheckedIn": "No active check-in found for today",
+  "locationTrackingActive": "Location tracking active",
+  "locationPermissionRequired": "Location permission is required for tracking"
 }

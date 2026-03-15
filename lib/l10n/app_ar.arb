@@ -129,5 +129,7 @@
   "accuracy": "الدقة",
   "alreadyCheckedIn": "لقد سجلت حضورك اليوم بالفعل",
   "gpsAccuracyLow": "دقة GPS منخفضة جداً. يرجى الانتقال إلى مكان مفتوح والمحاولة مرة أخرى.",
-  "notCheckedIn": "لا يوجد تسجيل حضور نشط اليوم"
+  "notCheckedIn": "لا يوجد تسجيل حضور نشط اليوم",
+  "locationTrackingActive": "تتبع الموقع نشط",
+  "locationPermissionRequired": "إذن الموقع مطلوب للتتبع"
 }

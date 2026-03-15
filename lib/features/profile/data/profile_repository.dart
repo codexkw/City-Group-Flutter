@@ -48,4 +48,14 @@ class ProfileRepository {
       data: {'fcmToken': fcmToken},
     );
   }
+
+  Future<void> updateLocation({
+    required double latitude,
+    required double longitude,
+  }) async {
+    await _client.dio.put(
+      ApiConstants.profileLocation,
+      data: {'latitude': latitude, 'longitude': longitude},
+    );
+  }
 }

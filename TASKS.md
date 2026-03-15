@@ -27,7 +27,8 @@
 | Phase 6: Notifications + Profile | 6 | 6 | 0 |
 | Phase 7: Speed Monitoring | 4 | 4 | 0 |
 | Phase 8: Polish + QA | 5 | 5 | 0 |
-| **Total** | **52** | **52** | **0** |
+| Phase 9: Location Tracking | 4 | 4 | 0 |
+| **Total** | **56** | **56** | **0** |
 
 ---
 
@@ -123,6 +124,15 @@
 
 ---
 
+## Phase 9: Location Tracking (Admin Map Support)
+
+- [✅] 2026-03-15 `LocationTrackingService` — sends GPS to `PUT /profile/location` every 60s
+- [✅] 2026-03-15 `AppLifecycleState` observer — pauses on background, resumes on foreground
+- [✅] 2026-03-15 Auth integration — starts on login/session restore, stops on logout
+- [✅] 2026-03-15 Localization — added `locationTrackingActive`, `locationPermissionRequired` to en/ar/hi ARB files
+
+---
+
 ## Bug Tracker
 
 | ID | Screen | Description | Status |
@@ -145,4 +155,4 @@
 
 ---
 
-*Last updated: 2026-03-08 | Done: 52/52 (100%) | All phases complete*
+*Last updated: 2026-03-15 | Done: 56/56 (100%) | All phases complete including location tracking*
