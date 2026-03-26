@@ -23,7 +23,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await BackgroundSpeedService.initialize();
+  try {
+    await BackgroundSpeedService.initialize();
+  } catch (_) {
+    // Background service may fail on newer Android APIs — non-critical
+  }
   runApp(const ProviderScope(child: CityGroupApp()));
 }
 

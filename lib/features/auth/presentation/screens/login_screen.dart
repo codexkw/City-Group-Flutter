@@ -54,7 +54,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       });
       return;
     }
-    // Login succeeded — router navigates away, no need to update state
+    // Login succeeded — router navigates away; guard against setState after dispose
+    if (!mounted) return;
   }
 
   @override
