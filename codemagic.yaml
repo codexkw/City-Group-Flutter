@@ -44,9 +44,6 @@ workflows:
       # --- iOS ---
       - name: Set up iOS code signing
         script: |
-          app-store-connect fetch-signing-files "com.codexkw.citygroup" \
-            --type IOS_APP_STORE \
-            --create
           keychain initialize
           app-store-connect certificates list \
             --type IOS_DISTRIBUTION \
@@ -57,6 +54,9 @@ workflows:
             --certificate-key=@env:CERTIFICATE_PRIVATE_KEY \
             --save
           keychain add-certificates
+          app-store-connect fetch-signing-files "com.codexkw.citygroup" \
+            --type IOS_APP_STORE \
+            --create
           xcode-project use-profiles
 
       - name: Build iOS IPA
