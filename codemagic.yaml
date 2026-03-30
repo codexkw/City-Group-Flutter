@@ -11,9 +11,6 @@ workflows:
       cocoapods: default
       groups:
         - City-Group
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.codexkw.citygroup
 
     triggering:
       events:
