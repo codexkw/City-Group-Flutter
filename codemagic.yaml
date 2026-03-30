@@ -50,15 +50,16 @@ workflows:
           keychain add-certificates
           xcode-project use-profiles
 
-      - name: Build iOS IPA
+      - name: Prepare iOS build
         script: |
-          # Build Flutter iOS without codesign first
-          flutter build ipa --release --no-codesign
-          # Re-run pod install to apply our Podfile fixes after Flutter regenerates
+          # Generate Xcode project without building
+          flutter build ios --config-only --release --no-codesign
+          # Re-run pod install to apply our Podfile fixes
           cd ios
           pod install
-          cd ..
-          # Archive with Xcode using code signing
+
+      - name: Build iOS IPA
+        script: |
           xcode-project build-ipa \
             --workspace ios/Runner.xcworkspace \
             --scheme Runner
