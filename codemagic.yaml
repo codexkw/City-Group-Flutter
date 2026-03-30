@@ -60,10 +60,17 @@ workflows:
 
       - name: Build iOS IPA
         script: |
-          xcode-project build-ipa \
-            --workspace ios/Runner.xcworkspace \
-            --scheme Runner \
-            -- SWIFT_ENABLE_EXPLICIT_MODULES=NO
+          xcodebuild -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $CM_BUILD_DIR/build/ios/Runner.xcarchive \
+            archive \
+            SWIFT_ENABLE_EXPLICIT_MODULES=NO
+          xcodebuild -exportArchive \
+            -archivePath $CM_BUILD_DIR/build/ios/Runner.xcarchive \
+            -exportOptionsPlist /Users/builder/export_options.plist \
+            -exportPath $CM_BUILD_DIR/build/ios/ipa
 
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
