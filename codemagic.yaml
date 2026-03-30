@@ -7,8 +7,13 @@ workflows:
     environment:
       flutter: stable
       java: 17
+      xcode: latest
+      cocoapods: default
       groups:
-        - app_credentials  # Create this group in Codemagic UI for signing keys
+        - City-Group
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.codexkw.cityGroupApp
 
     triggering:
       events:
@@ -39,20 +44,36 @@ workflows:
       # --- iOS ---
       - name: Set up iOS code signing
         script: |
+          app-store-connect fetch-signing-files "com.codexkw.cityGroupApp" \
+            --type IOS_APP_STORE \
+            --create
+          keychain initialize
+          app-store-connect certificates list \
+            --type IOS_DISTRIBUTION \
+            --certificate-key=@env:CERTIFICATE_PRIVATE_KEY \
+            --save || \
+          app-store-connect certificates create \
+            --type IOS_DISTRIBUTION \
+            --certificate-key=@env:CERTIFICATE_PRIVATE_KEY \
+            --save
+          keychain add-certificates
           xcode-project use-profiles
-        ignore_failure: true  # Remove this once signing is configured
 
       - name: Build iOS IPA
         script: |
           flutter build ipa --release \
             --export-options-plist=/Users/builder/export_options.plist
-        ignore_failure: true  # Remove this once signing is configured
 
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
       - build/ios/ipa/*.ipa
 
     publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - External Testers
       email:
         recipients:
           - anas@codexkw.com
