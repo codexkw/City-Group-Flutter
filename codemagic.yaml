@@ -13,7 +13,7 @@ workflows:
         - City-Group
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.codexkw.cityGroupApp
+        bundle_identifier: com.codexkw.citygroup
 
     triggering:
       events:
@@ -44,7 +44,7 @@ workflows:
       # --- iOS ---
       - name: Set up iOS code signing
         script: |
-          app-store-connect fetch-signing-files "com.codexkw.cityGroupApp" \
+          app-store-connect fetch-signing-files "com.codexkw.citygroup" \
             --type IOS_APP_STORE \
             --create
           keychain initialize
