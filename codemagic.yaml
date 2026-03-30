@@ -50,10 +50,25 @@ workflows:
           keychain add-certificates
           xcode-project use-profiles
 
+      - name: Fix Firebase non-modular header issue
+        script: |
+          cd ios
+          # Ensure Podfile uses static frameworks to fix Firebase header issue
+          sed -i '' "s/use_frameworks!/use_frameworks! :linkage => :static/" Podfile
+          # Add build setting to allow non-modular includes
+          if ! grep -q "CLANG_ALLOW_NON_MODULAR_INCLUDES" Podfile; then
+            sed -i '' "/flutter_additional_ios_build_settings/a\\
+                config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'" Podfile
+          fi
+          pod install
+
       - name: Build iOS IPA
         script: |
           flutter build ipa --release \
-            --export-options-plist=/Users/builder/export_options.plist
+            --no-codesign
+          xcode-project build-ipa \
+            --workspace ios/Runner.xcworkspace \
+            --scheme Runner
 
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
