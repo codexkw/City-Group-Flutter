@@ -50,25 +50,15 @@ workflows:
           keychain add-certificates
           xcode-project use-profiles
 
-      - name: Fix iOS pod issues
-        script: |
-          cd ios
-          # Ensure Podfile uses static frameworks to fix Firebase header issue
-          sed -i '' "s/use_frameworks!/use_frameworks! :linkage => :static/" Podfile
-          # Add deployment target fix and non-modular header fix to post_install
-          cat > /tmp/podfile_patch.rb << 'RUBY'
-                config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
-                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-          RUBY
-          if ! grep -q "CLANG_ALLOW_NON_MODULAR_INCLUDES" Podfile; then
-            sed -i '' "/flutter_additional_ios_build_settings/r /tmp/podfile_patch.rb" Podfile
-          fi
-          pod install
-
       - name: Build iOS IPA
         script: |
-          flutter build ipa --release \
-            --no-codesign
+          # Build Flutter iOS without codesign first
+          flutter build ipa --release --no-codesign
+          # Re-run pod install to apply our Podfile fixes after Flutter regenerates
+          cd ios
+          pod install
+          cd ..
+          # Archive with Xcode using code signing
           xcode-project build-ipa \
             --workspace ios/Runner.xcworkspace \
             --scheme Runner
