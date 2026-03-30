@@ -45,5 +45,21 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>City Group needs access to your camera to take photos for attendance check-in and profile pictures.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>City Group needs your location to verify attendance check-in and check-out at your work site.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>City Group needs your location in the background to monitor speed during active tasks.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>City Group needs access to your photo library to select a profile picture.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>City Group uses Face ID for secure biometric login.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
