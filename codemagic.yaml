@@ -72,9 +72,16 @@ workflows:
             -exportOptionsPlist /Users/builder/export_options.plist \
             -exportPath $CM_BUILD_DIR/build/ios/ipa
 
+      # --- iOS Simulator (for App Preview) ---
+      - name: Build iOS Simulator app
+        script: |
+          flutter build ios --simulator --debug
+        ignore_failure: true
+
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
       - build/ios/ipa/*.ipa
+      - build/ios/iphonesimulator/*.app
 
     publishing:
       app_store_connect:
