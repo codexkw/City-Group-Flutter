@@ -11,6 +11,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/error_utils.dart';
 import '../../../../core/utils/kuwait_time.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../location/services/location_tracking_service.dart';
 import '../../../speed_monitor/services/background_speed_service.dart';
 import '../../../speed_monitor/presentation/widgets/speed_alert_banner.dart';
 import '../providers/task_provider.dart';
@@ -147,7 +148,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       await repo.start(widget.taskId, latitude: pos.latitude, longitude: pos.longitude, accuracy: pos.accuracy);
       debugPrint('[TASK] API start succeeded');
       // Tag speed readings with this task
-      BackgroundSpeedService.setActiveTask(widget.taskId);
+      LocationTrackingService.instance.setActiveTask(widget.taskId);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
@@ -181,7 +182,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         latitude: pos?.latitude,
         longitude: pos?.longitude,
       );
-      BackgroundSpeedService.clearActiveTask();
+      LocationTrackingService.instance.clearActiveTask();
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
@@ -199,7 +200,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     try {
       final repo = ref.read(taskRepositoryProvider);
       await repo.resume(widget.taskId, latitude: pos?.latitude, longitude: pos?.longitude);
-      BackgroundSpeedService.setActiveTask(widget.taskId);
+      LocationTrackingService.instance.setActiveTask(widget.taskId);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
@@ -234,7 +235,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         completionNotes: result['notes'] as String?,
         photos: (result['photos'] as List?)?.cast<String>(),
       );
-      BackgroundSpeedService.clearActiveTask();
+      LocationTrackingService.instance.clearActiveTask();
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);

@@ -6,7 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../profile/data/profile_repository.dart';
 import '../../../location/services/location_tracking_service.dart';
-import '../../../speed_monitor/services/background_speed_service.dart';
 import '../../../speed_monitor/services/speed_settings.dart';
 import '../../data/auth_repository.dart';
 
@@ -93,7 +92,6 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
       );
       _registerFcmToken();
       LocationTrackingService.instance.start();
-      await BackgroundSpeedService.startMonitoring();
       return userData;
     } catch (_) {
       // Token expired — the interceptor will try refresh automatically
@@ -132,11 +130,8 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
 
       state = AsyncValue.data(userData);
 
-      // Start location tracking for admin map
+      // Start location + speed tracking (handles both admin map + speed monitoring)
       LocationTrackingService.instance.start();
-
-      // Start 24/7 speed monitoring
-      await BackgroundSpeedService.startMonitoring();
 
       // Register FCM token (fire-and-forget — don't block login)
       _registerFcmToken();
@@ -163,8 +158,7 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
 
   Future<void> logout() async {
     try {
-      LocationTrackingService.instance.stop();
-      await BackgroundSpeedService.stopMonitoring();
+      await LocationTrackingService.instance.stop();
       await SpeedSettings.clear();
       final repo = ref.read(authRepositoryProvider);
       await repo.logout();
