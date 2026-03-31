@@ -136,8 +136,11 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
 
       // Register FCM token (fire-and-forget — don't block login)
       _registerFcmToken();
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
+    } catch (e, _) {
+      // Set state back to data(null) instead of error to avoid triggering
+      // a router rebuild that would recreate the LoginScreen and lose the
+      // error message. The LoginScreen catches the rethrown error itself.
+      state = const AsyncValue.data(null);
       rethrow;
     }
   }
