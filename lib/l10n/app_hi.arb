@@ -131,5 +131,9 @@
   "gpsAccuracyLow": "GPS सटीकता बहुत कम है। कृपया खुली जगह पर जाएं और पुनः प्रयास करें।",
   "notCheckedIn": "आज के लिए कोई सक्रिय चेक-इन नहीं मिला",
   "locationTrackingActive": "स्थान ट्रैकिंग सक्रिय",
-  "locationPermissionRequired": "ट्रैकिंग के लिए स्थान अनुमति आवश्यक है"
+  "locationPermissionRequired": "ट्रैकिंग के लिए स्थान अनुमति आवश्यक है",
+
+  "openInMaps": "मानचित्र में खोलें",
+  "navigateToLocation": "स्थान पर नेविगेट करें",
+  "autoDetectingLocation": "आपका स्थान स्वचालित रूप से पता लगाया जा रहा है..."
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/error_utils.dart';
@@ -363,9 +364,41 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                       children: [
                         _InfoRow(label: l10n.status, value: _statusLabel(status, l10n)),
                         const Divider(height: 20),
-                        _InfoRow(
-                          label: l10n.location,
-                          value: task['location']?['name'] ?? task['locationName'] ?? '-',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(l10n.location, style: const TextStyle(color: AppColors.textSecondary)),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  task['location']?['name'] ?? task['locationName'] ?? '-',
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                if (task['locationLatitude'] != null && task['locationLongitude'] != null) ...[
+                                  const SizedBox(width: 8),
+                                  InkWell(
+                                    onTap: () async {
+                                      final lat = task['locationLatitude'];
+                                      final lng = task['locationLongitude'];
+                                      final uri = Uri.parse('https://www.google.com/maps/dir/?api=1&destination=$lat,$lng');
+                                      if (await canLaunchUrl(uri)) {
+                                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary.withValues(alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: const Icon(Icons.directions, color: AppColors.primary, size: 20),
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ],
                         ),
                         if (task['estimatedDurationMinutes'] != null) ...[
                           const Divider(height: 20),

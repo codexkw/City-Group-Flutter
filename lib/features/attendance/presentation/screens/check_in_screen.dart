@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,8 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   bool _isSubmitting = false;
   String? _error;
   String? _successMessage;
-  int? _selectedLocationId;
+  int? _autoSelectedLocationId;
+  String? _autoSelectedLocationName;
   File? _selfieFile;
   String? _selfieBase64;
 
@@ -69,12 +71,51 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
 
       if (position != null) {
         setState(() { _position = position; _isLoadingGps = false; });
+        _autoSelectNearestLocation(position);
       } else {
         setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
       }
     } catch (e) {
       setState(() { _error = AppLocalizations.of(context).failedToGetLocation; _isLoadingGps = false; });
     }
+  }
+
+  void _autoSelectNearestLocation(Position position) {
+    final locationsAsync = ref.read(locationsProvider);
+    locationsAsync.whenData((locations) {
+      if (locations.isEmpty) return;
+
+      double minDistance = double.infinity;
+      int? nearestId;
+      String? nearestName;
+
+      for (final loc in locations) {
+        final lat = (loc['latitude'] as num?)?.toDouble();
+        final lng = (loc['longitude'] as num?)?.toDouble();
+        if (lat == null || lng == null) continue;
+
+        final distance = _calculateDistance(position.latitude, position.longitude, lat, lng);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestId = loc['id'] as int?;
+          nearestName = loc['nameEn'] as String?;
+        }
+      }
+
+      if (nearestId != null) {
+        setState(() {
+          _autoSelectedLocationId = nearestId;
+          _autoSelectedLocationName = nearestName;
+        });
+      }
+    });
+  }
+
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const p = 0.017453292519943295; // pi / 180
+    final a = 0.5 - cos((lat2 - lat1) * p) / 2 +
+        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a)) * 1000; // meters
   }
 
   Future<void> _takeSelfie() async {
@@ -97,13 +138,13 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   }
 
   Future<void> _handleCheckIn() async {
-    if (_position == null || _selectedLocationId == null) return;
+    if (_position == null || _autoSelectedLocationId == null) return;
 
     setState(() { _isSubmitting = true; _error = null; });
     try {
       final repo = ref.read(attendanceRepositoryProvider);
       final result = await repo.checkIn(
-        locationId: _selectedLocationId!,
+        locationId: _autoSelectedLocationId!,
         latitude: _position!.latitude,
         longitude: _position!.longitude,
         accuracy: _position!.accuracy,
@@ -144,7 +185,15 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    // Watch locations to trigger auto-select when data arrives
     final locationsAsync = ref.watch(locationsProvider);
+
+    // Re-trigger auto-select when locations data arrives and we have position
+    locationsAsync.whenData((_) {
+      if (_position != null && _autoSelectedLocationId == null) {
+        _autoSelectNearestLocation(_position!);
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.checkIn)),
@@ -184,12 +233,26 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                                 const SizedBox(height: 4),
                                 if (_isLoadingGps)
                                   Text(l10n.loading, style: const TextStyle(color: AppColors.textSecondary))
-                                else if (_position != null)
+                                else if (_position != null) ...[
                                   Text(
                                     '${_position!.latitude.toStringAsFixed(5)}, ${_position!.longitude.toStringAsFixed(5)}\n${l10n.accuracy}: ${_position!.accuracy.toStringAsFixed(1)}m',
                                     style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                                  )
-                                else
+                                  ),
+                                  if (_autoSelectedLocationName != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.location_on, size: 14, color: AppColors.primary),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            _autoSelectedLocationName!,
+                                            style: const TextStyle(color: AppColors.primary, fontSize: 12, fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ] else
                                   Text(_error ?? l10n.gpsUnavailable, style: const TextStyle(color: AppColors.danger)),
                               ],
                             ),
@@ -198,48 +261,6 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Location selector
-                  Text(l10n.location, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  const SizedBox(height: 8),
-                  locationsAsync.when(
-                    data: (locations) {
-                      if (locations.isEmpty) {
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Text(l10n.noData),
-                          ),
-                        );
-                      }
-                      return Column(
-                        children: locations.map((loc) {
-                          final id = loc['id'];
-                          final isSelected = _selectedLocationId == id;
-                          return Card(
-                            color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : null,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: BorderSide(
-                                color: isSelected ? AppColors.primary : AppColors.border,
-                                width: isSelected ? 2 : 1,
-                              ),
-                            ),
-                            child: ListTile(
-                              leading: const Icon(Icons.location_on, color: AppColors.primary),
-                              title: Text(loc['nameEn'] ?? ''),
-                              subtitle: Text('${loc['address'] ?? ''}\n${l10n.radius}: ${loc['geofenceRadiusMeters'] ?? loc['geofenceRadius'] ?? ''}m'),
-                              trailing: isSelected ? const Icon(Icons.check_circle, color: AppColors.primary) : null,
-                              onTap: () => setState(() => _selectedLocationId = id),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    },
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (e, _) => Text(l10n.errorOccurred, style: const TextStyle(color: AppColors.danger)),
                   ),
                   const SizedBox(height: 16),
 
@@ -291,7 +312,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
 
                   // Check In button
                   ElevatedButton.icon(
-                    onPressed: (_position != null && _selectedLocationId != null && !_isSubmitting)
+                    onPressed: (_position != null && _autoSelectedLocationId != null && !_isSubmitting)
                         ? _handleCheckIn
                         : null,
                     icon: _isSubmitting

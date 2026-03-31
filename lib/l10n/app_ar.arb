@@ -131,5 +131,9 @@
   "gpsAccuracyLow": "دقة GPS منخفضة جداً. يرجى الانتقال إلى مكان مفتوح والمحاولة مرة أخرى.",
   "notCheckedIn": "لا يوجد تسجيل حضور نشط اليوم",
   "locationTrackingActive": "تتبع الموقع نشط",
-  "locationPermissionRequired": "إذن الموقع مطلوب للتتبع"
+  "locationPermissionRequired": "إذن الموقع مطلوب للتتبع",
+
+  "openInMaps": "فتح في الخرائط",
+  "navigateToLocation": "الانتقال إلى الموقع",
+  "autoDetectingLocation": "جاري تحديد موقعك تلقائياً..."
 }
