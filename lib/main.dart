@@ -21,8 +21,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  try {
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  } catch (e) {
+    debugPrint('Firebase initialization failed: $e');
+  }
   try {
     await BackgroundSpeedService.initialize();
   } catch (_) {
@@ -46,36 +50,40 @@ class _CityGroupAppState extends ConsumerState<CityGroupApp> {
   }
 
   Future<void> _setupFcm() async {
-    final messaging = FirebaseMessaging.instance;
+    try {
+      final messaging = FirebaseMessaging.instance;
 
-    // Request permission (iOS + Android 13+)
-    await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    // Foreground messages — show as snackbar
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      final notification = message.notification;
-      if (notification == null) return;
-      final ctx = navigatorKey.currentContext;
-      if (ctx == null) return;
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(
-          content: Text(notification.title ?? notification.body ?? ''),
-          duration: const Duration(seconds: 4),
-        ),
+      // Request permission (iOS + Android 13+)
+      await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
       );
-    });
 
-    // When user taps notification from background state
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationTap);
+      // Foreground messages — show as snackbar
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        final notification = message.notification;
+        if (notification == null) return;
+        final ctx = navigatorKey.currentContext;
+        if (ctx == null) return;
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(
+            content: Text(notification.title ?? notification.body ?? ''),
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      });
 
-    // App opened from terminated state via notification tap
-    final initialMessage = await messaging.getInitialMessage();
-    if (initialMessage != null) {
-      _handleNotificationTap(initialMessage);
+      // When user taps notification from background state
+      FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationTap);
+
+      // App opened from terminated state via notification tap
+      final initialMessage = await messaging.getInitialMessage();
+      if (initialMessage != null) {
+        _handleNotificationTap(initialMessage);
+      }
+    } catch (e) {
+      debugPrint('FCM setup failed: $e');
     }
   }
 
