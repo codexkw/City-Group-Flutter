@@ -48,6 +48,8 @@ class BackgroundSpeedService {
     final isRunning = await _service.isRunning();
     if (!isRunning) {
       await _service.startService();
+      // Wait for service to initialize listeners before sending start event
+      await Future.delayed(const Duration(seconds: 2));
     }
     _service.invoke('start', {'taskId': taskId ?? ''});
   }
@@ -141,11 +143,19 @@ Future<void> _onStart(ServiceInstance service) async {
       if (!isMonitoring) return;
 
       try {
-        final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        ).timeout(const Duration(seconds: 10));
+        Position? position;
+        try {
+          position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.low,
+          ).timeout(const Duration(seconds: 10));
+        } catch (_) {
+          // GPS timeout — try last known position
+          position = await Geolocator.getLastKnownPosition();
+        }
 
-        final speedKmh = (position.speed * 3.6).clamp(0.0, 999.0); // m/s to km/h
+        if (position == null) return;
+
+        final speedKmh = (position.speed.clamp(0.0, double.infinity) * 3.6).clamp(0.0, 999.0); // m/s to km/h
 
         // Store in local DB (taskId is optional)
         await SpeedLogDb.insertReading(
