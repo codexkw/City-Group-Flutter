@@ -146,8 +146,8 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       final repo = ref.read(taskRepositoryProvider);
       await repo.start(widget.taskId, latitude: pos.latitude, longitude: pos.longitude, accuracy: pos.accuracy);
       debugPrint('[TASK] API start succeeded');
-      // Start speed monitoring
-      await BackgroundSpeedService.startMonitoring(widget.taskId);
+      // Tag speed readings with this task
+      BackgroundSpeedService.setActiveTask(widget.taskId);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
@@ -181,7 +181,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         latitude: pos?.latitude,
         longitude: pos?.longitude,
       );
-      await BackgroundSpeedService.stopMonitoring();
+      BackgroundSpeedService.clearActiveTask();
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
@@ -199,7 +199,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     try {
       final repo = ref.read(taskRepositoryProvider);
       await repo.resume(widget.taskId, latitude: pos?.latitude, longitude: pos?.longitude);
-      await BackgroundSpeedService.startMonitoring(widget.taskId);
+      BackgroundSpeedService.setActiveTask(widget.taskId);
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);
     } on DioException catch (e) {
@@ -234,7 +234,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         completionNotes: result['notes'] as String?,
         photos: (result['photos'] as List?)?.cast<String>(),
       );
-      await BackgroundSpeedService.stopMonitoring();
+      BackgroundSpeedService.clearActiveTask();
       _stopTimer();
       ref.invalidate(taskDetailProvider(widget.taskId));
       ref.invalidate(todayTasksProvider);

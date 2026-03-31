@@ -93,6 +93,7 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
       );
       _registerFcmToken();
       LocationTrackingService.instance.start();
+      await BackgroundSpeedService.startMonitoring();
       return userData;
     } catch (_) {
       // Token expired — the interceptor will try refresh automatically
@@ -133,6 +134,9 @@ class AuthNotifier extends AsyncNotifier<UserData?> {
 
       // Start location tracking for admin map
       LocationTrackingService.instance.start();
+
+      // Start 24/7 speed monitoring
+      await BackgroundSpeedService.startMonitoring();
 
       // Register FCM token (fire-and-forget — don't block login)
       _registerFcmToken();

@@ -6,20 +6,19 @@ class SpeedLogRepository {
   SpeedLogRepository(this._client);
 
   /// Batch upload speed readings to the server.
-  /// Returns { "saved": int, "violations": int }.
+  /// taskId is included per reading if available.
   Future<Map<String, dynamic>> uploadBatch({
-    required String taskId,
     required List<Map<String, dynamic>> readings,
   }) async {
     final response = await _client.dio.post(
       ApiConstants.speedLogsBatch,
       data: {
-        'taskId': taskId,
         'readings': readings.map((r) => {
           'recordedAt': r['recordedAt'],
           'speedKmh': r['speedKmh'],
           'latitude': r['latitude'],
           'longitude': r['longitude'],
+          if (r['taskId'] != null) 'taskId': int.tryParse(r['taskId'].toString()),
         }).toList(),
       },
     );

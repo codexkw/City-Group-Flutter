@@ -18,12 +18,12 @@ class SpeedLogDb {
 
     return openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE speed_readings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            taskId TEXT NOT NULL,
+            taskId TEXT,
             recordedAt TEXT NOT NULL,
             speedKmh REAL NOT NULL,
             latitude REAL NOT NULL,
@@ -32,12 +32,19 @@ class SpeedLogDb {
           )
         ''');
       },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          // v1 -> v2: taskId becomes nullable
+          // SQLite doesn't support ALTER COLUMN, but TEXT columns already accept NULL
+          // No schema change needed — just allow null inserts
+        }
+      },
     );
   }
 
-  /// Insert a new speed reading.
+  /// Insert a new speed reading. taskId is optional (null when no active task).
   static Future<int> insertReading({
-    required String taskId,
+    String? taskId,
     required DateTime recordedAt,
     required double speedKmh,
     required double latitude,
@@ -54,7 +61,7 @@ class SpeedLogDb {
     });
   }
 
-  /// Get unsynced readings for a task (up to [limit]).
+  /// Get unsynced readings, optionally filtered by task (up to [limit]).
   static Future<List<Map<String, dynamic>>> getUnsyncedReadings({
     String? taskId,
     int limit = 5,
