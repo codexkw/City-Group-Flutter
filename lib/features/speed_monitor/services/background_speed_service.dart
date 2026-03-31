@@ -187,6 +187,17 @@ Future<void> _onStart(ServiceInstance service) async {
         if (unsyncedCount >= 5) {
           await _uploadBatch();
         }
+
+        // Update employee location for admin live map (keeps employee online)
+        try {
+          final client = ApiClient(const FlutterSecureStorage());
+          await client.dio.put('/profile/location', data: {
+            'latitude': position.latitude,
+            'longitude': position.longitude,
+          });
+        } catch (_) {
+          // Non-critical — location ping failed
+        }
       } catch (_) {
         // GPS unavailable — skip this reading
       }
