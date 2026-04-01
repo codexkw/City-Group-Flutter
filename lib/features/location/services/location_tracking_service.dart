@@ -79,9 +79,11 @@ class LocationTrackingService with WidgetsBindingObserver {
       if (readings.isNotEmpty) {
         final client = ApiClient(const FlutterSecureStorage());
         final repo = SpeedLogRepository(client);
-        await repo.uploadBatch(readings: readings);
-        final ids = readings.map((r) => r['id'] as int).toList();
-        await SpeedLogDb.markSynced(ids);
+        final success = await repo.uploadBatch(readings: readings);
+        if (success) {
+          final ids = readings.map((r) => r['id'] as int).toList();
+          await SpeedLogDb.markSynced(ids);
+        }
       }
     } catch (_) {}
   }
@@ -141,9 +143,11 @@ class LocationTrackingService with WidgetsBindingObserver {
           if (readings.isNotEmpty) {
             final client = ApiClient(const FlutterSecureStorage());
             final repo = SpeedLogRepository(client);
-            await repo.uploadBatch(readings: readings);
-            final ids = readings.map((r) => r['id'] as int).toList();
-            await SpeedLogDb.markSynced(ids);
+            final success = await repo.uploadBatch(readings: readings);
+            if (success) {
+              final ids = readings.map((r) => r['id'] as int).toList();
+              await SpeedLogDb.markSynced(ids);
+            }
           }
         } catch (_) {}
       }
