@@ -6,7 +6,7 @@ class AttendanceRepository {
   AttendanceRepository(this._client);
 
   Future<Map<String, dynamic>> checkIn({
-    required int locationId,
+    int? locationId,
     required double latitude,
     required double longitude,
     required double accuracy,
@@ -15,7 +15,7 @@ class AttendanceRepository {
     final response = await _client.dio.post(
       ApiConstants.checkIn,
       data: {
-        'locationId': locationId,
+        if (locationId != null) 'locationId': locationId,
         'latitude': latitude,
         'longitude': longitude,
         'accuracy': accuracy,

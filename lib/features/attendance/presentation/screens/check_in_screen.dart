@@ -138,13 +138,13 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   }
 
   Future<void> _handleCheckIn() async {
-    if (_position == null || _autoSelectedLocationId == null) return;
+    if (_position == null) return;
 
     setState(() { _isSubmitting = true; _error = null; });
     try {
       final repo = ref.read(attendanceRepositoryProvider);
       final result = await repo.checkIn(
-        locationId: _autoSelectedLocationId!,
+        locationId: _autoSelectedLocationId,
         latitude: _position!.latitude,
         longitude: _position!.longitude,
         accuracy: _position!.accuracy,
@@ -164,9 +164,6 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       final l10n = AppLocalizations.of(context);
       String errorMsg;
       switch (code) {
-        case 'OUTSIDE_GEOFENCE':
-          errorMsg = l10n.outsideGeofence;
-          break;
         case 'ALREADY_CHECKED_IN':
           errorMsg = l10n.alreadyCheckedIn;
           break;
@@ -312,7 +309,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
 
                   // Check In button
                   ElevatedButton.icon(
-                    onPressed: (_position != null && _autoSelectedLocationId != null && !_isSubmitting)
+                    onPressed: (_position != null && !_isSubmitting)
                         ? _handleCheckIn
                         : null,
                     icon: _isSubmitting
