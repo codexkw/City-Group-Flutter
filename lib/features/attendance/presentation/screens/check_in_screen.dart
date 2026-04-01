@@ -309,7 +309,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
 
                   // Check In button
                   ElevatedButton.icon(
-                    onPressed: (_position != null && !_isSubmitting)
+                    onPressed: (_position != null && _selfieBase64 != null && !_isSubmitting)
                         ? _handleCheckIn
                         : null,
                     icon: _isSubmitting
