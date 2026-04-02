@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
-import 'features/speed_monitor/services/background_speed_service.dart';
 import 'l10n/app_localizations.dart';
 
 /// Global navigator key for showing foreground notification snackbars.
@@ -26,11 +25,6 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
-  }
-  try {
-    await BackgroundSpeedService.initialize();
-  } catch (_) {
-    // Background service may fail on newer Android APIs — non-critical
   }
   runApp(const ProviderScope(child: CityGroupApp()));
 }
