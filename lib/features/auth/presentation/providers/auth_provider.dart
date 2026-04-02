@@ -12,7 +12,7 @@ import '../../data/auth_repository.dart';
 
 // Secure storage provider
 final secureStorageProvider = Provider<FlutterSecureStorage>((ref) {
-  return const FlutterSecureStorage();
+  return secureStorage;
 });
 
 // API client provider

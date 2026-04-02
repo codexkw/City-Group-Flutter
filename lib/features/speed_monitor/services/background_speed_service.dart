@@ -6,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../core/api/api_client.dart';
 import 'speed_settings.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Background service that tracks GPS speed when app is backgrounded/locked.
 ///
@@ -109,7 +108,7 @@ Future<void> _onStart(ServiceInstance service) async {
 
         // Send location + speed to API (same endpoint as foreground)
         try {
-          final client = ApiClient(const FlutterSecureStorage());
+          final client = ApiClient(secureStorage);
           await client.dio.put('/profile/location', data: {
             'latitude': position.latitude,
             'longitude': position.longitude,

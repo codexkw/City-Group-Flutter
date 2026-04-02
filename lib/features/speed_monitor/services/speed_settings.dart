@@ -1,9 +1,9 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../../../core/api/api_client.dart';
 
 /// Stores company speed limit settings locally.
 /// Read by the background service without making API calls.
 class SpeedSettings {
-  static const _storage = FlutterSecureStorage();
+  static const _storage = secureStorage;
   static const _speedLimitKey = 'company_speed_limit_kmh';
   static const _speedWarningKey = 'company_speed_warning_kmh';
 

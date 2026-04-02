@@ -3,6 +3,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../constants/api_constants.dart';
 
+/// Shared secure storage instance with Android-safe configuration.
+const secureStorage = FlutterSecureStorage(
+  aOptions: AndroidOptions(encryptedSharedPreferences: true),
+);
+
 class ApiClient {
   late final Dio _dio;
   final FlutterSecureStorage _storage;

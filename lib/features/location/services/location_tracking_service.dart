@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../core/api/api_client.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Sends the employee's GPS location + speed to the server every 30 seconds.
 ///
@@ -101,7 +100,7 @@ class LocationTrackingService with WidgetsBindingObserver {
       // Send location + speed in a single API call
       // The API creates SpeedLog records and checks for violations server-side
       try {
-        final client = ApiClient(const FlutterSecureStorage());
+        final client = ApiClient(secureStorage);
         await client.dio.put(
           '/profile/location',
           data: {
